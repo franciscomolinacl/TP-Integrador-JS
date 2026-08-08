@@ -28,12 +28,49 @@ Aplicación que permite gestionar usuarios de archivo JSON con Node.js y Express
 ## Cómo ejecutar el proyecto
 
 1. Opcion 1
-    - Descarga script bash inicio.sh de la carpeta docs
+    - Descarga script bash inicio.sh desde la [carpeta docs del proyecto](https://github.com/franciscomolinacl/TP-Integrador-JS/blob/18e1000575b1518b6898f64566ae67bed562d7e6/docs/inicio.sh) o desde [Google Drive](https://drive.google.com/file/d/1dQs8TBvgu-DUv5oF8SdTTQ7mnZJ3vh4-/view?usp=sharing)
     - Ejecutar en VS Code con git o terminal (en Windows solo con git o Ubuntu si esta instalado y configurado)
+    - Abrir en navegador [http://localhost:4000/](http://localhost:4000/)
 
 2. Opcion 2
-    - Clonar repositorio
+    - Clonar repositorio con siguiente comando:
+    
+            git clone https://github.com/franciscomolinacl/TP-Integrador-JS.git
+    - Abrir carpeta descargada con VS code
+    - Ejecutar el siguiente comando:
+    
+            npm init -y
+    - Instalar dependencias con el siguiente comando:
 
+            npm i express dotenv morgan hbs yargs
+            npm i --save-dev nodemon
+    - Revisar archivo package.json y ver que coincidan versiones. Pueden revisar con los siguientes comandos:
+
+            node --version
+
+            npm query "#express" | grep version | cut -d'"' -f4
+            
+            npm list dotenv --depth=0 --json | node -p "JSON.parse(require('fs').readFileSync(0)).dependencies?.dotenv?.version || ''"
+            
+            npm list nodemon --depth=0 --json | node -p "JSON.parse(require('fs').readFileSync(0)).dependencies?.nodemon?.version || ''"
+            
+            npm list morgan --depth=0 --json | node -p "JSON.parse(require('fs').readFileSync(0)).dependencies?.morgan?.version || ''"
+            
+            npm list yargs --depth=0 --json | node -p "JSON.parse(require('fs').readFileSync(0)).dependencies?.yargs?.version || ''"
+            
+            npm list hbs --depth=0 --json | node -p "JSON.parse(require('fs').readFileSync(0)).dependencies?.hbs?.version || ''"
+    
+    - Crear archivo .env con lo siguiente:
+    
+            PORT=4000
+            NODE_ENV=development
+
+    - Ejecutar el servidor con este comando:
+
+            npm run dev
+
+     - Abrir en navegador [http://localhost:4000/](http://localhost:4000/)
+     
 ## Estructura del proyecto
 ```bash
 Proyecto node-express-web-app/

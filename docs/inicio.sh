@@ -1,18 +1,23 @@
 #!/bin/bash
 
+# Se clone al repo
+clear
+git clone https://github.com/franciscomolinacl/TP-Integrador-JS.git
+
 # Variables
-proyecto="node-express-web-app"
+proyecto="TP-Integrador-JS"
 descripcion="Proyecto del Módulo 6: TP Integrador JS"
 nombre="Francisco Molina"
 
-# Se crea directorio de proyecto e ingresamos
-mkdir "$proyecto" 
+# Se ingresa al directorio del proyecto
 cd "$proyecto"
 
 # Inicializamos el proyecto
+clear
 npm init -y
 
 # Instalación de dependencias
+clear
 npm i express dotenv morgan hbs yargs
 npm i --save-dev nodemon
 
@@ -69,37 +74,6 @@ echo '  "devDependencies": {' >> package.json
 echo '    "nodemon": "^'$ver_nodemon'"' >> package.json
 echo '  }' >> package.json
 echo '}' >> package.json
-
-# Creación directorio src e ingresamos a el
-mkdir src
-cd src
-
-# Creamos el archivo app.js con una base
-echo 'import "dotenv/config";' > app.js
-echo 'import express from "express";' >> app.js
-echo '' >> app.js
-echo 'const app = express();' >> app.js
-echo 'const PORT = process.env.PORT || 3000;' >> app.js
-echo '' >> app.js
-echo 'app.get("/", (req, res) => {' >> app.js
-echo '  res.send("<h1>Node '$ver_node' & Express '$ver_express' Web App</h1><p>Servidor funcionando.</p>");' >> app.js
-echo '});' >> app.js
-echo '' >> app.js
-echo 'app.listen(PORT, () => {' >> app.js
-echo '  console.log(`Servidor disponible en http://localhost:${PORT}`);' >> app.js
-echo '});' >> app.js
-echo '' >> app.js
-echo 'app.get("/acerca", (req, res) => {' >> app.js
-echo '  res.send(`' >> app.js
-echo '    <h1>Acerca del proyecto</h1>' >> app.js
-echo '    <p>Nombre: '$proyecto'</p>' >> app.js
-echo '    <p>Versión: 1.0.0</p>' >> app.js
-echo '    <p>Autor: '$nombre'</p>' >> app.js
-echo '  `);' >> app.js
-echo '});' >> app.js
-
-# Salimos de src para estar en la raíz antes de ejecutar
-cd ..
 
 # Se ejecuta el servidor con nodemon
 npm run dev
