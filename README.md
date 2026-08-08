@@ -26,6 +26,7 @@ Aplicación que permite gestionar usuarios de archivo JSON con Node.js y Express
 - Configuración del Servidor y Rutas en Express.
 - Instalación, configuración y uso de Handlebars.
 - Uso del módulo fs para manipular archivos.
+- Registro de logs
 
 ## Cómo ejecutar el proyecto
 

@@ -16,6 +16,9 @@ import {
   RUTA_PUBLIC,
   RUTA_VIEWS
 } from "./utils/rutas.js";
+import {
+  registrarAcceso
+} from "./middlewares/registrarAcceso.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +34,7 @@ registrarHelpersHandlebars();
 
 app.use(morgan("dev"));
 app.use(agregarContextoPeticion);
+app.use(registrarAcceso);
 app.use(agregarDatosVista);
 app.use(express.json());
 app.use(

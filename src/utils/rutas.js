@@ -16,3 +16,13 @@ export const RUTA_USUARIOS = join(
   "data",
   "usuarios.json"
 );
+
+export const RUTA_LOGS = join(
+  RUTA_RAIZ,
+  "logs"
+);
+
+export const RUTA_LOG_ACCESOS = join(
+  RUTA_LOGS,
+  "log.txt"
+);

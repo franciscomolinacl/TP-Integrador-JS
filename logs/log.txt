@@ -1,0 +1,8 @@
+2026-08-08T01:43:29.518Z | GET | /
+2026-08-08T01:43:29.561Z | GET | /css/estilos.css
+2026-08-08T01:43:29.563Z | GET | /js/app.js
+2026-08-08T01:43:29.562Z | GET | /img/logo.png
+2026-08-08T01:43:32.772Z | GET | /usuarios
+2026-08-08T01:43:32.800Z | GET | /css/estilos.css
+2026-08-08T01:43:32.801Z | GET | /js/app.js
+2026-08-08T01:43:32.802Z | GET | /img/logo.png
