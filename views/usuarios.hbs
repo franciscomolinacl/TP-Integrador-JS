@@ -1,57 +1,86 @@
 {{> header}}
-    <main class="contenedor">
-      <h1>{{titulo}}</h1>
+<main class="container my-5 flex-grow-1">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
 
-      <p>Total encontrado: {{totalUsuarios}}</p>
-
-      <form method="GET" action="/usuarios">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
-          <label for="nombre">Nombre</label>
-          <input
-            id="nombre"
-            name="nombre"
-            type="search"
-            value="{{filtros.nombre}}"
-          >
+          <h1 class="display-6 fw-bold text-dark m-0">{{titulo}}</h1>
+          <p class="text-muted m-0 mt-1">Gestiona y consulta los registros de la plataforma.</p>
         </div>
-
         <div>
-          <label for="activo">Estado</label>
-            <select id="activo" name="activo">
-            <option value="">Todos</option>
+          <span class="badge bg-dark text-white rounded-pill px-3 py-2 fs-6 shadow-sm">
+            <i class="bi bi-people-fill me-2"></i>Total encontrado: <span
+              class="fw-bold text-info">{{totalUsuarios}}</span>
+          </span>
+        </div>
+      </div>
 
-            <option
-                value="true"
-                {{#if (esIgual filtros.activo "true")}}
-                selected
-                {{/if}}
-            >
-                Activos
-            </option>
+      <div class="card border-0 shadow-sm rounded-4 p-4 mb-5 bg-white">
+        <form method="GET" action="/usuarios" class="row g-3 align-items-end">
 
-            <option
-                value="false"
-                {{#if (esIgual filtros.activo "false")}}
-                selected
-                {{/if}}
-            >
-                Inactivos
-            </option>
+          <div class="col-md-5">
+            <label for="nombre" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-search me-1"></i> Buscar por Nombre
+            </label>
+            <input id="nombre" name="nombre" type="search" class="form-control bg-light border-light"
+              placeholder="Ej: Francisco Molina..." value="{{filtros.nombre}}">
+          </div>
+
+          <div class="col-md-4">
+            <label for="activo" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-toggle-on me-1"></i> Filtrar por Estado
+            </label>
+            <select id="activo" name="activo" class="form-select bg-light border-light">
+              <option value="">Todos los estados</option>
+
+              <option value="true" {{#if (esIgual filtros.activo "true" )}} selected {{/if}}>
+                🟢 Activos
+              </option>
+
+              <option value="false" {{#if (esIgual filtros.activo "false" )}} selected {{/if}}>
+                🔴 Inactivos
+              </option>
             </select>
-        </div>
+          </div>
 
-        <button type="submit">Filtrar</button>
-        <a href="/usuarios">Limpiar</a>
-      </form>
+          <div class="col-md-3 d-flex gap-2">
+            <button type="submit"
+              class="btn btn-dark w-100 fw-medium shadow-sm d-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-filter"></i> Filtrar
+            </button>
+            <a href="/usuarios"
+              class="btn btn-outline-secondary w-100 fw-medium d-flex align-items-center justify-content-center gap-2 text-dark">
+              <i class="bi bi-arrow-counterclockwise"></i> Limpiar
+            </a>
+          </div>
+
+        </form>
+      </div>
 
       {{#if hayUsuarios}}
-        <section class="grid-usuarios">
-            {{#each usuarios}}
-             {{> tarjetaUsuario}}
-            {{/each}}
-        </section>
+      <section class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {{#each usuarios}}
+        <div class="col">
+          {{> tarjetaUsuario}}
+        </div>
+        {{/each}}
+      </section>
       {{else}}
-        <p>No se encontraron usuarios para los filtros indicados.</p>
+
+      <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light">
+        <div class="text-muted mb-3">
+          <i class="bi bi-person-exclamation display-1 opacity-20"></i>
+        </div>
+        <h3 class="h5 fw-bold text-secondary">No se encontraron usuarios</h3>
+        <p class="text-muted small px-3">Prueba modificando los criterios de búsqueda o limpiando los filtros aplicados.
+        </p>
+        <a href="/usuarios" class="btn btn-sm btn-dark mt-2 fw-medium">Mostrar todos</a>
+      </div>
       {{/if}}
-    </main>
+
+    </div>
+  </div>
+</main>
+
 {{> footer}}

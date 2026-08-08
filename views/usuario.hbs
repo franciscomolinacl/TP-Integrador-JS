@@ -1,30 +1,65 @@
 {{> header}}
 
-<main class="contenedor">
-  <p>
-    <a href="/usuarios">← Volver a usuarios</a>
-  </p>
+<main class="container my-5 flex-grow-1">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
 
-  <article class="detalle-usuario">
-    <h1>{{usuario.nombre}}</h1>
-
-    <dl>
-      <div>
-        <dt>ID</dt>
-        <dd>{{usuario.id}}</dd>
+      <div class="mb-4">
+        <a href="/usuarios"
+          class="btn btn-link link-secondary p-0 text-decoration-none d-inline-flex align-items-center gap-2 fw-medium link-hover">
+          <i class="bi bi-arrow-left fs-5"></i> Volver a usuarios
+        </a>
       </div>
 
-      <div>
-        <dt>Correo</dt>
-        <dd>{{usuario.correo}}</dd>
-      </div>
+      <article class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
 
-      <div>
-        <dt>Estado</dt>
-        <dd>{{formatearEstado usuario.activo}}</dd>
-      </div>
-    </dl>
-  </article>
+        <div class="card-header bg-dark text-white p-4 border-0 d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              class="bg-white bg-opacity-10 text-white rounded-circle p-2 d-flex align-items-center justify-content-center"
+              style="width: 48px; height: 48px;">
+              <i class="bi bi-person-fill fs-4"></i>
+            </div>
+            <h1 class="h3 m-0 fw-bold tracking-wide">{{usuario.nombre}}</h1>
+          </div>
+
+          <span class="badge bg-light {{#if usuario.activo}}text-success{{else}}text-danger{{/if}} rounded-pill px-3 py-2 fw-semibold shadow-sm">
+            <i class="bi bi-circle-fill me-1 small"></i> {{formatearEstado usuario.activo}}
+          </span>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+          <div class="row g-4">
+
+            <div class="col-md-6">
+              <div class="p-3 bg-light rounded-3 border border-light">
+                <span class="text-uppercase text-muted fw-bold small tracking-wider d-block mb-1">ID del Registro</span>
+                <span class="font-monospace text-dark fw-medium fs-5">#{{usuario.id}}</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="p-3 bg-light rounded-3 border border-light">
+                <span class="text-uppercase text-muted fw-bold small tracking-wider d-block mb-1">Correo
+                  Electrónico</span>
+                <span class="text-dark fw-medium fs-5 d-flex align-items-center gap-2">
+                  <i class="bi bi-envelope text-secondary"></i> {{usuario.correo}}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-footer bg-light p-3 text-end border-0 px-4">
+          <span class="text-muted small">Vista de administración interna</span>
+        </div>
+
+      </article>
+
+    </div>
+  </div>
 </main>
+
 
 {{> footer}}

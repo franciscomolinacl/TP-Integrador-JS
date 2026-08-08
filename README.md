@@ -1,49 +1,124 @@
-```text
-README.md
-```
+# Node & Express Web App
 
-Contenido inicial:
+Proyecto del Módulo 6: TP Integrador JS - Francisco Molina
 
-```markdown
-## Node & Express Web App
+## Descripción
 
-Aplicación web desarrollada con Node.js y Express como proyecto incremental.
+Aplicación que permite gestionar usuarios de archivo JSON con Node.js y Express
 
-### Requisitos
+## Tecnologías usadas
 
-- Node.js 18 o superior
-- npm
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
+- Node.js
+- NPM
+- Express
 
-### Instalación
+## Conceptos aplicados
 
+- Instalación Node + Express
+- Gestión de paquetes.
+- Uso de Módulos y Middleware en Express.js.
+- Configuración del Servidor y Rutas en Express.
+- Instalación, configuración y uso de Handlebars.
+- Uso del módulo fs para manipular archivos.
+
+## Cómo ejecutar el proyecto
+
+1. Opcion 1
+    - Descarga script bash inicio.sh de la carpeta docs
+    - Ejecutar en VS Code con git o terminal (en Windows solo con git o Ubuntu si esta instalado y configurado)
+
+2. Opcion 2
+    - Clonar repositorio
+
+## Estructura del proyecto
 ```bash
-npm install
+Proyecto node-express-web-app/
+├── docs
+│     └── inicio.sh
+│     └── capturas
+│              ├── caption-servidor-iniciado.png
+│              └── caption-web-inicio.png
+├── node_modules (con todos los modulos necesarios)
+├── public
+│     ├── css
+│     │    └── estilos.css
+│     ├── img
+│     │     ├── favicon.ico
+│     │     └── logo.png
+│     └── js
+│          └── app.js
+├── src
+│     ├── config
+│     │     └── handlebars.js
+│     ├── controllers
+│     │     ├── index.controller.js
+│     │     └── usuarios.controller.js
+│     ├── data
+│     │     └── usuarios.json
+│     ├── middlewares
+│     │     ├── agregarContextoPeticion.js
+│     │     ├── agregarDatosVista.js
+│     │     ├── manejarErrores.js
+│     │     ├── rutaNoEncontrada.js
+│     │     └── validarIdUsuario.js
+│     ├── routes
+│     │     ├── index.routes.js
+│     │     ├── usuarios.routes.js
+│     │     └── web.routes.js
+│     ├── services
+│     │     └── usuarios.service.js
+│     ├── utils
+│     │     ├── archivos.js
+│     │     ├── consola.js
+│     │     ├── errores.js
+│     │     ├── mensajes.js
+│     │     ├── rutas.js
+│     │     └── validaciones.js
+│     ├── app.js
+│     └── cli.js
+├── views
+│     ├── partials
+│     │     ├── footer.hbs
+│     │     ├── header.hbs
+│     │     └── tarjetaUsuario.hbs
+│     ├── error.hbs
+│     ├── home.hbs
+│     ├── usuario.hbs
+│     └── usuarios.hbs
+├── .env
+├── .env.example
+├── .gitignore
+├── package-lock.json
+├── package.json
+└── README.md
 ```
 
-### Ejecución
+## Anexos
 
-#### Modo normal
+### Servidor iniciado
 
-```bash
-npm start
-```
+![Servidor iniciado](./docs/capturas/caption-servidor-iniciado.png)
 
-#### Modo desarrollo
+### Web inicio
 
-```bash
-npm run dev
-```
+![Consola](./docs/capturas/caption-web-inicio.png)
 
-### Variables de entorno
+### Menu Usuarios
 
-Crear un archivo `.env` a partir de `.env.example`:
+![Menu](./docs/capturas/caption-usuarios.png)
 
-```env
-PORT=3000
-```
+### Vista Usuario
 
-### Archivo principal
+![Menu](./docs/capturas/caption-usuario.png)
 
-Se utiliza `src/app.js` como punto de entrada porque contiene la configuración
-inicial y el arranque de la aplicación Express.
-```
+### Estado servidor
+
+![Menu](./docs/capturas/caption-estado.png)
+
+### Vista API usuarios
+
+![Menu](./docs/capturas/caption-api-usuarios.png)

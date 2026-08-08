@@ -1,17 +1,37 @@
-<article class="usuario">
-  <p class="numero">Usuario {{sumarUno @index}}</p>
+<article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white transition-hover">
 
-  <h2>{{nombre}}</h2>
+  <div class="card-header bg-transparent border-0 pt-4 px-4 pb-2 d-flex justify-content-between align-items-center">
+    <span class="text-uppercase text-muted fw-bold font-monospace small tracking-wider">
+      <i class="bi bi-hash small"></i>Usuario {{sumarUno @index}}
+    </span>
 
-  <p>{{correo}}</p>
+    {{#if activo}}
+    <span
+      class="badge text-success border border-success-subtle rounded-pill px-2.5 py-1 fw-semibold small">
+      <i class="bi bi-circle-fill me-1 small"></i> Activo
+    </span>
+    {{else}}
+    <span
+      class="badge text-danger border border-danger-subtle rounded-pill px-2.5 py-1 fw-semibold small">
+      <i class="bi bi-circle-fill me-1 small"></i> Inactivo
+    </span>
+    {{/if}}
+  </div>
 
-  {{#if activo}}
-    <span class="estado estado-activo">Activo</span>
-  {{else}}
-    <span class="estado estado-inactivo">Inactivo</span>
-  {{/if}}
+  <div class="card-body px-4 pb-3">
+    <h2 class="h5 card-title fw-bold text-dark mb-1 tracking-tight text-truncate">
+      {{nombre}}
+    </h2>
+    <p class="card-text text-muted small d-flex align-items-center gap-2 mb-0 text-truncate">
+      <i class="bi bi-envelope text-secondary opacity-75"></i> {{correo}}
+    </p>
+  </div>
 
-  <p>
-    <a href="/usuarios/{{id}}">Ver detalle</a>
-  </p>
+  <div class="card-footer bg-transparent border-0 pt-0 px-4 pb-4 mt-auto">
+    <a href="/usuarios/{{id}}"
+      class="btn btn-outline-dark btn-sm w-100 rounded-3 fw-medium d-flex align-items-center justify-content-center gap-1 shadow-sm-hover transition-base text-dark link-light">
+      Ver detalle completo <i class="bi bi-chevron-right small"></i>
+    </a>
+  </div>
+
 </article>
