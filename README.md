@@ -2,7 +2,6 @@
 
 Proyecto del Módulo 6: TP Integrador JS - Francisco Molina
 
-Visita el [Demo Operativo](https://tp-integrador-js.onrender.com/)
 
 ## Descripción
 
