@@ -93,53 +93,59 @@ await yargs(hideBin(process.argv))
     }
   })
 
-    .command({
+  .command({
     command: "modificar",
     describe: "Modifica un usuario",
-    builder: {
-    id: {
-    describe: "Identificador",
-    type: "number",
-    demandOption: true
-    },
-    nombre: {
-    describe: "Nuevo nombre",
-    type: "string"
-    },
-    correo: {
-    describe: "Nuevo correo",
-    type: "string"
-    },
-    activo: {
-    describe: "Nuevo estado",
-    type: "boolean"
-    }
-    },
-    handler: async (argv) => {
-    const tieneCambios =
-    argv.nombre !== undefined ||
-    argv.correo !== undefined ||
-    argv.activo !== undefined;
-
-    if (!tieneCambios) {
-    throw new Error(
-    "Debes indicar al menos un dato para modificar."
-    );
-    }
-
-    const usuario = await modificarUsuario(argv.id, {
-    nombre: argv.nombre,
-    correo: argv.correo,
-    activo: argv.activo
-    });
-
-    mostrarExito(
-    `Usuario ${usuario.id} modificado.`
-    );
-
-    mostrarUsuario(usuario);
-    }
+builder: (yargs) =>
+  yargs
+    .option("id", {
+      describe: "Identificador",
+      type: "number",
+      demandOption: true
     })
+    .option("nombre", {
+      describe: "Nuevo nombre",
+      type: "string"
+    })
+    .option("correo", {
+      describe: "Nuevo correo",
+      type: "string"
+    })
+    .option("activo", {
+      describe: "Nuevo estado",
+      type: "boolean"
+    })
+    .check((argv) => {
+      const tieneCambios =
+        argv.nombre !== undefined ||
+        argv.correo !== undefined ||
+        argv.activo !== undefined;
+
+      if (!tieneCambios) {
+        throw new Error(
+          "Debes indicar al menos un dato para modificar."
+        );
+      }
+
+      return true;
+    }),
+    handler: async (argv) => {
+      const usuario = await modificarUsuario(
+        argv.id,
+        {
+          nombre: argv.nombre,
+          correo: argv.correo,
+          activo: argv.activo
+        }
+      );
+
+      mostrarExito(
+        `Usuario ${usuario.id} modificado.`
+      );
+
+      mostrarUsuario(usuario);
+    }
+  })
 
   .command({
     command: "eliminar",

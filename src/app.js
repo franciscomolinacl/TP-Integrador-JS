@@ -19,6 +19,29 @@ import {
 import {
   registrarAcceso
 } from "./middlewares/registrarAcceso.js";
+import {
+  pool,
+  probarConexion
+} from "./config/database.js";
+
+import {
+  validarVariablesEntorno
+} from "./config/env.js";
+
+validarVariablesEntorno();
+
+try {
+  await probarConexion();
+} catch (error) {
+  console.error(
+    "La aplicación no puede iniciar sin base de datos."
+  );
+
+  console.error(error.message);
+
+  process.exitCode = 1;
+  throw error;
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -51,6 +74,9 @@ app.use("/api/usuarios", usuariosRouter);
 app.use(rutaNoEncontrada);
 app.use(manejarErrores);
 
-app.listen(PORT, () => {
-  console.log(obtenerMensajeInicio(PORT));
+
+const servidor = app.listen(PORT, () => {
+  console.log(
+    obtenerMensajeInicio(PORT)
+  );
 });

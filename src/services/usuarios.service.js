@@ -1,7 +1,7 @@
-import {
-  escribirJson,
-  leerJson
-} from "../utils/archivos.js";
+// import {
+//   escribirJson,
+//   leerJson
+// } from "../utils/archivos.js";
 import { crearErrorHttp } from "../utils/errores.js";
 import { RUTA_USUARIOS } from "../utils/rutas.js";
 import {
@@ -10,6 +10,9 @@ import {
   normalizarTexto,
   validarId
 } from "../utils/validaciones.js";
+import {
+  buscarTodos
+} from "../repositories/usuarios.repository.js";
 
 async function guardarUsuarios(usuarios) {
   await escribirJson(RUTA_USUARIOS, usuarios);
@@ -41,16 +44,31 @@ function existeCorreo(
 }
 
 export async function obtenerUsuarios() {
-  const usuarios = await leerJson(RUTA_USUARIOS);
-
-  if (!Array.isArray(usuarios)) {
-    throw new Error(
-      "El archivo de usuarios debe contener un arreglo."
-    );
-  }
+  const usuarios = await buscarTodos();
 
   return usuarios;
 }
+export async function contarUsuarios() {
+  const resultado = await pool.query(`
+    SELECT COUNT(*) AS total
+    FROM usuarios
+  `);
+
+  return Number(
+    resultado.rows[0].total
+  );
+}
+// export async function obtenerUsuarios() {
+//   const usuarios = await leerJson(RUTA_USUARIOS);
+
+//   if (!Array.isArray(usuarios)) {
+//     throw new Error(
+//       "El archivo de usuarios debe contener un arreglo."
+//     );
+//   }
+
+//   return usuarios;
+// }
 
 export async function obtenerUsuarioPorId(id) {
   const usuarios = await obtenerUsuarios();
