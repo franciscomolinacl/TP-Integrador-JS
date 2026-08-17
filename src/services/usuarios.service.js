@@ -11,8 +11,15 @@ import {
   validarId
 } from "../utils/validaciones.js";
 import {
+  buscarPorId,
   buscarTodos
 } from "../repositories/usuarios.repository.js";
+
+export async function obtenerUsuarioPorId(id) {
+  const idNumerico = validarId(id);
+
+  return buscarPorId(idNumerico);
+}
 
 async function guardarUsuarios(usuarios) {
   await escribirJson(RUTA_USUARIOS, usuarios);
@@ -70,16 +77,16 @@ export async function contarUsuarios() {
 //   return usuarios;
 // }
 
-export async function obtenerUsuarioPorId(id) {
-  const usuarios = await obtenerUsuarios();
-  const idNumerico = validarId(id);
+// export async function obtenerUsuarioPorId(id) {
+//   const usuarios = await obtenerUsuarios();
+//   const idNumerico = validarId(id);
 
-  return (
-    usuarios.find(
-      (usuario) => usuario.id === idNumerico
-    ) ?? null
-  );
-}
+//   return (
+//     usuarios.find(
+//       (usuario) => usuario.id === idNumerico
+//     ) ?? null
+//   );
+// }
 
 export async function crearUsuario(datos) {
   const usuarios = await obtenerUsuarios();

@@ -51,3 +51,13 @@
 2026-08-14T05:43:39.059Z | GET | /api/usuarios/resumen
 2026-08-14T05:43:42.280Z | GET | /api/usuarios/resumen
 2026-08-14T05:43:43.319Z | GET | /api/usuarios/resumen
+2026-08-17T14:47:06.160Z | GET | /
+2026-08-17T14:47:15.165Z | GET | /api/usuarios/1
+2026-08-17T14:47:38.468Z | GET | /api/usuarios/999
+2026-08-17T14:47:59.014Z | GET | /api/usuarios/abc
+2026-08-17T14:58:45.874Z | GET | /api/usuarios
+2026-08-17T14:58:55.520Z | GET | /api/usuarios/1
+2026-08-17T14:59:07.289Z | GET | /api/usuarios?nombre=ana
+2026-08-17T14:59:19.355Z | GET | /api/usuarios?activo=true
+2026-08-17T14:59:29.127Z | GET | /api/usuarios?nombre=ana&activo=true
+2026-08-17T15:00:55.440Z | GET | /api/usuarios?buscar=ana
