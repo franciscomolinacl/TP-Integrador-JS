@@ -1,18 +1,18 @@
-// import {
-//   escribirJson,
-//   leerJson
-// } from "../utils/archivos.js";
 import { crearErrorHttp } from "../utils/errores.js";
 import { RUTA_USUARIOS } from "../utils/rutas.js";
 import {
   convertirBooleano,
   esCorreoValido,
   normalizarTexto,
-  validarId
+  validarId,
+  validarNombre
 } from "../utils/validaciones.js";
 import {
   buscarPorId,
-  buscarTodos
+  buscarTodos,
+  insertar,
+  actualizar,
+  eliminar
 } from "../repositories/usuarios.repository.js";
 
 export async function obtenerUsuarioPorId(id) {
@@ -65,181 +65,80 @@ export async function contarUsuarios() {
     resultado.rows[0].total
   );
 }
-// export async function obtenerUsuarios() {
-//   const usuarios = await leerJson(RUTA_USUARIOS);
-
-//   if (!Array.isArray(usuarios)) {
-//     throw new Error(
-//       "El archivo de usuarios debe contener un arreglo."
-//     );
-//   }
-
-//   return usuarios;
-// }
-
-// export async function obtenerUsuarioPorId(id) {
-//   const usuarios = await obtenerUsuarios();
-//   const idNumerico = validarId(id);
-
-//   return (
-//     usuarios.find(
-//       (usuario) => usuario.id === idNumerico
-//     ) ?? null
-//   );
-// }
 
 export async function crearUsuario(datos) {
-  const usuarios = await obtenerUsuarios();
+  const nombre =
+    validarNombre(datos.nombre);
 
-  const nombre = normalizarTexto(datos.nombre);
-  const correo = normalizarTexto(
-    datos.correo
-  ).toLowerCase();
+  const correo = datos.correo;
 
   const activo =
     datos.activo === undefined
       ? true
-      : convertirBooleano(datos.activo);
+      : convertirBooleano(
+          datos.activo
+        );
 
-  if (!nombre) {
-    throw crearErrorHttp(
-      "El nombre es obligatorio.",
-      400
-    );
-  }
-
-  if (!correo) {
-    throw crearErrorHttp(
-      "El correo es obligatorio.",
-      400
-    );
-  }
-
-  if (!esCorreoValido(correo)) {
-    throw crearErrorHttp(
-      "El correo no tiene un formato válido.",
-      400
-    );
-  }
-
-  if (existeCorreo(usuarios, correo)) {
-    throw crearErrorHttp(
-      "Ya existe un usuario con ese correo.",
-      409
-    );
-  }
-
-  const usuario = {
-    id: generarSiguienteId(usuarios),
+  return insertar({
     nombre,
     correo,
     activo
-  };
-
-  usuarios.push(usuario);
-  await guardarUsuarios(usuarios);
-
-  return usuario;
+  });
 }
 
 export async function modificarUsuario(
   id,
-  cambios
+  datos
 ) {
-  const usuarios = await obtenerUsuarios();
-  const idNumerico = validarId(id);
+  const idNumerico =
+    validarId(id);
 
-  const indice = usuarios.findIndex(
-    (usuario) => usuario.id === idNumerico
-  );
+  const cambios = {};
 
-  if (indice === -1) {
-    throw crearErrorHttp(
-      "Usuario no encontrado.",
-      404
-    );
+  if (datos.nombre !== undefined) {
+    cambios.nombre =
+      validarNombre(datos.nombre);
   }
 
-  const usuarioActual = usuarios[indice];
-
-  const nombre =
-    cambios.nombre === undefined
-      ? usuarioActual.nombre
-      : normalizarTexto(cambios.nombre);
-
-  const correo =
-    cambios.correo === undefined
-      ? usuarioActual.correo
-      : normalizarTexto(
-          cambios.correo
-        ).toLowerCase();
-
-  const activo =
-    cambios.activo === undefined
-      ? usuarioActual.activo
-      : convertirBooleano(cambios.activo);
-
-  if (!nombre) {
-    throw crearErrorHttp(
-      "El nombre no puede quedar vacío.",
-      400
-    );
+  if (datos.correo !== undefined) {
+    cambios.correo =
+      esCorreoValido(datos.correo);
   }
 
-  if (!esCorreoValido(correo)) {
-    throw crearErrorHttp(
-      "El correo no tiene un formato válido.",
-      400
-    );
+  if (datos.activo !== undefined) {
+    cambios.activo =
+      convertirBooleano(
+        datos.activo
+      );
   }
 
   if (
-    existeCorreo(
-      usuarios,
-      correo,
-      idNumerico
-    )
+    Object.keys(cambios).length === 0
   ) {
-    throw crearErrorHttp(
-      "Ya existe otro usuario con ese correo.",
-      409
+    throw new Error(
+      "Debes enviar al menos un campo modificable."
     );
   }
 
-  const usuarioModificado = {
-    ...usuarioActual,
-    nombre,
-    correo,
-    activo
-  };
+  const usuario =
+    await actualizar(
+      idNumerico,
+      cambios
+    );
 
-  usuarios[indice] = usuarioModificado;
-  await guardarUsuarios(usuarios);
-
-  return usuarioModificado;
+  return usuario;
 }
 
 export async function eliminarUsuario(id) {
-  const usuarios = await obtenerUsuarios();
-  const idNumerico = validarId(id);
+  const idNumerico =
+    validarId(id);
 
-  const indice = usuarios.findIndex(
-    (usuario) => usuario.id === idNumerico
-  );
+  const existente =
+    await buscarPorId(idNumerico);
 
-  if (indice === -1) {
-    throw crearErrorHttp(
-      "Usuario no encontrado.",
-      404
-    );
+  if (!existente) {
+    return null;
   }
 
-  const [usuarioEliminado] = usuarios.splice(
-    indice,
-    1
-  );
-
-  await guardarUsuarios(usuarios);
-
-  return usuarioEliminado;
+  return eliminar(idNumerico);
 }

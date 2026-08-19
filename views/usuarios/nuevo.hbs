@@ -1,0 +1,93 @@
+{{> header}}
+
+<main class="container my-5 flex-grow-1">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- Encabezado de la página -->
+      <div class="mb-4">
+        <h1 class="display-6 fw-bold text-dark m-0">{{titulo}}</h1>
+        <p class="text-muted m-0 mt-1">Completa los campos para registrar un nuevo usuario en la plataforma.</p>
+      </div>
+
+      <!-- Alerta de Error -->
+      {{#if error}}
+        <div class="alert alert-danger d-flex align-items-center border-0 shadow-sm rounded-4 mb-4" role="alert">
+          <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+          <div>
+            <strong class="d-block">No fue posible crear el usuario:</strong>
+            <span class="small">{{error}}</span>
+          </div>
+        </div>
+      {{/if}}
+
+      <!-- Tarjeta del Formulario -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+        <form method="POST" action="/usuarios" class="needs-validation">
+          
+          <!-- Campo: Nombre -->
+          <div class="mb-4">
+            <label for="nombre" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-person me-1"></i> Nombre Completo
+            </label>
+            <input 
+              id="nombre" 
+              name="nombre" 
+              type="text" 
+              class="form-control bg-light border-light py-2"
+              placeholder="Ej: Juan Pérez"
+              required 
+              minlength="2" 
+              value="{{valores.nombre}}"
+            >
+          </div>
+
+          <!-- Campo: Correo -->
+          <div class="mb-4">
+            <label for="correo" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-envelope me-1"></i> Correo Electrónico
+            </label>
+            <input 
+              id="correo" 
+              name="correo" 
+              type="email" 
+              class="form-control bg-light border-light py-2"
+              placeholder="correo@ejemplo.com"
+              required 
+              value="{{valores.correo}}"
+            >
+          </div>
+
+          <!-- Campo: Estado -->
+          <div class="mb-5">
+            <label for="activo" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-toggle-on me-1"></i> Estado Inicial
+            </label>
+            <select id="activo" name="activo" class="form-select bg-light border-light py-2">
+              <option value="true" {{#if (esIgual valores.activo "true" )}} selected {{/if}}>
+                🟢 Activo
+              </option>
+              <option value="false" {{#if (esIgual valores.activo "false" )}} selected {{/if}}>
+                🔴 Inactivo
+              </option>
+            </select>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="d-flex flex-column flex-sm-row justify-content-end gap-3 border-top pt-4">
+            <a href="/usuarios" class="btn btn-light border-light text-secondary rounded-pill px-4 py-2 order-2 order-sm-1">
+              <i class="bi bi-x-circle me-1"></i> Cancelar
+            </a>
+            <button type="submit" class="btn btn-dark rounded-pill px-4 py-2 order-1 order-sm-2 shadow-sm">
+              <i class="bi bi-person-plus-fill me-1"></i> Crear usuario
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+{{> footer}}
