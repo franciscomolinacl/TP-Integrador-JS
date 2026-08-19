@@ -1,38 +1,14 @@
-import {
-  agregarLinea
-} from "../utils/archivos.js";
-import {
-  RUTA_LOG_ACCESOS
-} from "../utils/rutas.js";
+import { agregarLinea } from "../utils/archivos.js";
+import { RUTA_LOG_ACCESOS } from "../utils/rutas.js";
 
-export async function registrarAcceso(
-  req,
-  res,
-  next
-) {
-  const extensionesEstaticas = [
-    ".css",
-    ".js",
-    ".png",
-    ".jpg",
-    ".jpeg",
-    ".svg",
-    ".ico"
-  ];
+const RE_ESTATICOS = /\.(css|js|png|jpg|jpeg|svg|ico|gif|webp)$/i;
 
-  const esEstatico = extensionesEstaticas.some(
-    (extension) =>
-      req.path.endsWith(extension)
-  );
-
-  if (esEstatico) {
-    next();
-    return;
+export async function registrarAcceso(req, res, next) {
+  if (RE_ESTATICOS.test(req.path)) {
+    return next(); // Return directo para cortar la ejecución limpiamente
   }
 
-  const fechaHora =
-    req.requestTime ||
-    new Date().toISOString();
+  const fechaHora = req.requestTime || new Date().toISOString();
 
   const linea = [
     fechaHora,
@@ -41,15 +17,9 @@ export async function registrarAcceso(
   ].join(" | ");
 
   try {
-    await agregarLinea(
-      RUTA_LOG_ACCESOS,
-      linea
-    );
+    await agregarLinea(RUTA_LOG_ACCESOS, linea);
   } catch (error) {
-    console.error(
-      "No fue posible registrar el acceso:",
-      error.message
-    );
+    console.error("No fue posible registrar el acceso:", error);
   }
 
   next();
