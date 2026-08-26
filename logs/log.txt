@@ -249,3 +249,9 @@
 2026-08-19T19:09:42.071Z | GET | /usuarios
 2026-08-19T19:09:47.280Z | GET | /usuarios/3
 2026-08-19T19:10:13.214Z | GET | /usuarios/nuevo
+2026-08-24T23:23:32.354Z | POST | /api/usuarios/registro-completo
+2026-08-24T23:25:13.388Z | POST | /api/usuarios/registro-completo
+2026-08-24T23:26:15.097Z | POST | /api/usuarios/registro-completo
+2026-08-25T00:03:39.862Z | POST | /api/usuarios/registro-completo
+2026-08-25T00:04:54.383Z | POST | /api/usuarios/registro-completo
+2026-08-25T00:05:25.210Z | POST | /api/usuarios/registro-completo

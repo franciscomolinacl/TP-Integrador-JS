@@ -1,5 +1,9 @@
+import {
+  pool
+} from "../config/database.js";
 import { crearErrorHttp } from "../utils/errores.js";
 import { RUTA_USUARIOS } from "../utils/rutas.js";
+import { registrarFalloTransaccion } from "../utils/logs.js";
 import {
   convertirBooleano,
   esCorreoValido,
@@ -12,8 +16,12 @@ import {
   buscarTodos,
   insertar,
   actualizar,
-  eliminar
+  eliminar,
+  insertarConCliente
 } from "../repositories/usuarios.repository.js";
+import {
+  insertarHistorial
+} from "../repositories/historial.repository.js";
 
 export async function obtenerUsuarioPorId(id) {
   const idNumerico = validarId(id);
@@ -141,4 +149,85 @@ export async function eliminarUsuario(id) {
   }
 
   return eliminar(idNumerico);
+}
+
+export async function registrarUsuarioCompleto(
+  datos
+) {
+  const nombre =
+    validarNombre(datos.nombre);
+
+  const correo =
+    esCorreoValido(datos.correo);
+
+  const activo =
+    datos.activo === undefined
+      ? true
+      : convertirBooleano(
+          datos.activo
+        );
+
+  const client =
+    await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const usuario =
+      await insertarConCliente(
+        client,
+        {
+          nombre,
+          correo,
+          activo
+        }
+      );
+
+    const historial =
+      await insertarHistorial(
+        client,
+        {
+          usuarioId: usuario.id,
+          evento: "USUARIO_CREADO",
+          detalle:
+            "Registro inicial del usuario"
+        }
+      );
+
+    await client.query("COMMIT");
+
+    return {
+      usuario,
+      historial
+    };
+} catch (error) {
+  try {
+    await client.query("ROLLBACK");
+  } catch (rollbackError) {
+    console.error(
+      "Error durante ROLLBACK:",
+      rollbackError.message
+    );
+  }
+
+  try {
+    await registrarFalloTransaccion(
+      error,
+      {
+        operacion:
+          "registrarUsuarioCompleto",
+        correo
+      }
+    );
+  } catch (logError) {
+    console.error(
+      "No fue posible registrar el fallo:",
+      logError.message
+    );
+  }
+
+  throw error;
+} finally {
+    client.release();
+  }
 }

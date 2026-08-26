@@ -9,6 +9,9 @@ import {
 import {
   validarIdUsuario
 } from "../middlewares/validarIdUsuario.js";
+import {
+  registrarUsuarioCompletoController
+} from "../controllers/usuarios-api.controller.js";
 
 const router = Router();
 
@@ -18,6 +21,11 @@ router.get(
   "/:id",
   validarIdUsuario,
   buscarUsuario
+);
+
+router.post(
+  "/registro-completo",
+  registrarUsuarioCompletoController
 );
 
 router.post("/", registrarUsuario);

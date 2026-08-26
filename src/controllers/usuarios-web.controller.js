@@ -2,7 +2,8 @@ import {
   crearUsuario, 
   obtenerUsuarioPorId, 
   modificarUsuario, 
-  eliminarUsuario 
+  eliminarUsuario,
+  registrarUsuarioCompleto
 } from "../services/usuarios.service.js";
 
 export function mostrarFormularioNuevoUsuario(
@@ -187,6 +188,70 @@ export async function eliminarUsuarioWeb(
       "/usuarios"
     );
   } catch (error) {
+    next(error);
+  }
+}
+
+export function mostrarRegistroCompleto(
+  req,
+  res
+) {
+  res.render(
+    "usuarios/registro-completo",
+    {
+      titulo:
+        "Registro completo",
+      valores: {
+        nombre:
+          "",
+        correo:
+          "",
+        activo:
+          "true"
+      }
+    }
+  );
+}
+
+export async function registrarUsuarioCompletoWeb(
+  req,
+  res,
+  next
+) {
+  try {
+    await registrarUsuarioCompleto(
+      req.body
+    );
+
+    return res.redirect(
+      "/usuarios?mensaje=creado"
+    );
+  } catch (error) {
+    if (
+      error.statusCode === 400 ||
+      error.statusCode === 409
+    ) {
+      return res.status(
+        error.statusCode
+      ).render(
+        "usuarios/registro-completo",
+        {
+          titulo:
+            "Registro completo",
+          error:
+            error.message,
+          valores: {
+            nombre:
+              req.body.nombre ?? "",
+            correo:
+              req.body.correo ?? "",
+            activo:
+              req.body.activo ?? "true"
+          }
+        }
+      );
+    }
+
     next(error);
   }
 }

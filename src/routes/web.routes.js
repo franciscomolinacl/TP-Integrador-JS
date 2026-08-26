@@ -14,7 +14,9 @@ import {
   crearUsuarioWeb, 
   actualizarUsuarioWeb, 
   mostrarFormularioEditarUsuario, 
-  eliminarUsuarioWeb 
+  eliminarUsuarioWeb,
+  registrarUsuarioCompletoWeb,
+  mostrarRegistroCompleto
 } from "../controllers/usuarios-web.controller.js";
 
 const router = Router();
@@ -26,6 +28,16 @@ router.get("/usuarios", mostrarUsuarios);
 router.get(
   "/usuarios/nuevo",
   mostrarFormularioNuevoUsuario
+);
+
+router.get(
+  "/usuarios/registro-completo",
+  mostrarRegistroCompleto
+);
+
+router.post(
+  "/usuarios/registro-completo",
+  registrarUsuarioCompletoWeb
 );
 
 router.get(
