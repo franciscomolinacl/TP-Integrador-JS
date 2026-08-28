@@ -28,8 +28,19 @@ import {
   validarVariablesEntorno
 } from "./config/env.js";
 
+import {
+  sequelize
+} from "./config/sequelize.js";
+
+import {
+  probarSequelize
+} from "./ejemplos/probar-sequelize.js";
 validarVariablesEntorno();
 
+import usuariosOrmRouter
+  from "./routes/usuarios-orm.routes.js";
+
+await probarSequelize();
 try {
   await probarConexion();
 } catch (error) {
@@ -70,6 +81,11 @@ app.use(express.static(RUTA_PUBLIC));
 app.use("/", indexRouter);
 app.use("/", webRouter);
 app.use("/api/usuarios", usuariosRouter);
+
+app.use(
+  "/api/orm/usuarios",
+  usuariosOrmRouter
+);
 
 app.use(rutaNoEncontrada);
 app.use(manejarErrores);
