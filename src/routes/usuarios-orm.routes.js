@@ -2,7 +2,9 @@ import {
   Router
 } from "express";
 import {
-  listarUsuariosOrm
+  listarUsuariosOrm,
+  obtenerUsuarioRelacionado,
+  obtenerUsuarioConPedidosController
 } from "../controllers/usuarios-orm.controller.js";
 
 const router =
@@ -11,6 +13,21 @@ const router =
 router.get(
   "/",
   listarUsuariosOrm
+);
+
+router.get(
+  "/",
+  listarUsuariosOrm
+);
+
+router.get(
+  "/:id/relaciones",
+  obtenerUsuarioRelacionado
+);
+
+router.get(
+  "/:id/pedidos",
+  obtenerUsuarioConPedidosController
 );
 
 export default router;

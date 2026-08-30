@@ -1,0 +1,126 @@
+<article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white transition-hover">
+
+  <div class="card-header bg-transparent border-0 pt-4 px-4 pb-2 d-flex justify-content-between align-items-center">
+    <span class="text-uppercase text-muted fw-bold font-monospace small tracking-wider">
+      <i class="bi bi-hash small"></i>Pedido {{sumarUno @index}}
+    </span>
+
+    {{#if (esIgual estado "pendiente")}}
+    <span class="badge text-warning border border-warning-subtle rounded-pill px-2.5 py-1 fw-semibold small">
+      <i class="bi bi-circle-fill me-1 small"></i> Pendiente
+    </span>
+    {{else if (esIgual estado "pagado")}}
+    <span class="badge text-success border border-success-subtle rounded-pill px-2.5 py-1 fw-semibold small">
+      <i class="bi bi-circle-fill me-1 small"></i> Pagado
+    </span>
+    {{else if (esIgual estado "enviado")}}
+    <span class="badge text-primary border border-primary-subtle rounded-pill px-2.5 py-1 fw-semibold small">
+      <i class="bi bi-circle-fill me-1 small"></i> Enviado
+    </span>
+    {{else}}
+    <span class="badge text-secondary border border-secondary-subtle rounded-pill px-2.5 py-1 fw-semibold small">
+      <i class="bi bi-circle-fill me-1 small"></i> {{mayusculas estado}}
+    </span>
+    {{/if}}
+  </div>
+
+  <div class="card-body px-4 pb-3">
+    <h2 class="h5 card-title fw-bold text-dark mb-1 tracking-tight">
+      ${{total}}
+    </h2>
+    <p class="card-text text-muted small d-flex align-items-center gap-2 mb-1">
+      <i class="bi bi-person text-secondary opacity-75"></i> {{usuario.nombre}}
+    </p>
+    <p class="card-text text-muted small d-flex align-items-center gap-2 mb-0">
+      <i class="bi bi-calendar3 text-secondary opacity-75"></i> {{formatearFecha fecha}}
+    </p>
+  </div>
+
+  <div class="card-footer bg-transparent border-0 pt-0 px-4 pb-4 mt-auto">
+    <button 
+      class="btn btn-outline-warning btn-sm w-100 rounded-3 fw-medium d-flex align-items-center 
+        justify-content-center my-2 gap-1 shadow-sm-hover transition-base text-warning link-light" 
+      type="button" 
+      data-bs-toggle="modal" 
+      data-bs-target="#modalEditarEstado-{{id}}">
+      <i class="bi bi-pencil-square small"></i> Editar estado
+    </button>
+
+    <form id="formEliminar-{{id}}" method="POST" action="/pedidos/{{id}}/eliminar">
+      <button 
+        class="btn btn-outline-danger btn-sm w-100 rounded-3 fw-medium d-flex align-items-center 
+          justify-content-center my-2 gap-1 shadow-sm-hover transition-base text-danger link-light" 
+        type="button" 
+        data-bs-toggle="modal" 
+        data-bs-target="#modalEliminar-{{id}}">
+        <i class="bi bi-trash small"></i> Eliminar
+      </button>
+    </form>
+  </div>
+
+  <!-- Modal Editar Estado -->
+  <div class="modal fade" id="modalEditarEstado-{{id}}" tabindex="-1" aria-labelledby="modalEditarEstadoLabel-{{id}}" 
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-3 shadow">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-dark" id="modalEditarEstadoLabel-{{id}}">Editar estado del pedido #{{id}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="/pedidos/{{id}}/editar-estado">
+          <div class="modal-body py-0">
+            <label for="estado-{{id}}" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              Estado actual
+            </label>
+            <select name="estado" id="estado-{{id}}" class="form-select">
+              <option value="pendiente" {{#if (esIgual estado "pendiente")}}selected{{/if}}>Pendiente</option>
+              <option value="pagado" {{#if (esIgual estado "pagado")}}selected{{/if}}>Pagado</option>
+              <option value="enviado" {{#if (esIgual estado "enviado")}}selected{{/if}}>Enviado</option>
+            </select>
+          </div>
+          <div class="modal-footer border-0 row g-2">
+            <div class="col">
+              <button type="button" class="btn btn-light w-100 rounded-3 fw-medium" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-warning w-100 rounded-3 fw-medium">
+                Guardar cambios
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Eliminar -->
+  <div class="modal fade" id="modalEliminar-{{id}}" tabindex="-1" aria-labelledby="modalEliminarLabel-{{id}}" 
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-3 shadow">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold text-dark" id="modalEliminarLabel-{{id}}">¿Eliminar pedido #{{id}}?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-0 text-muted">
+          Esta acción no se puede deshacer. ¿Realmente deseas eliminar este pedido?
+        </div>
+        <div class="modal-footer border-0 row g-2">
+          <div class="col">
+            <button type="button" class="btn btn-light w-100 rounded-3 fw-medium" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+          <div class="col">
+            <button type="submit" form="formEliminar-{{id}}" class="btn btn-danger w-100 rounded-3 fw-medium">
+              Eliminar permanentemente
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</article>

@@ -231,3 +231,12 @@ export async function insertarConCliente(
 
   return resultado.rows[0];
 }
+
+export async function buscarPedidos() {
+  const resultado = await pool.query(`
+    SELECT * FROM pedidos
+    ORDER BY id
+  `);
+
+  return resultado.rows;
+}

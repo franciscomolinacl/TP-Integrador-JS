@@ -16,45 +16,88 @@
 
 <body class="d-flex flex-column min-vh-100 bg-light text-dark">
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="/">
-        <img src="/img/logo.png" class="logo me-2" alt="Logo Node.js" style="height: 40px; width: auto;">
-      </a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <img src="/img/logo.png" class="logo me-2" alt="Logo Node.js" style="height: 40px; width: auto;">
+    </a>
 
-      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-4">
-          <li class="nav-item mx-1">
-            <a class="nav-link active fw-medium" aria-current="page" href="/">Inicio</a>
-          </li>
-          <li class="nav-item mx-1">
-            <a class="nav-link text-white-50" href="/usuarios">Usuarios</a>
-          </li>
-          <li class="nav-item mx-1">
-            <a class="nav-link text-white-50" href="/status">Estado</a>
-          </li>
-          <li class="nav-item mx-1">
-            <a class="nav-link text-white-50" href="/api/usuarios">API</a>
-          </li>
-          <li>
-          <a class="nav-link text-white-50" href="/usuarios/nuevo">Crear usuario</a>
-          </li>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-4 align-items-lg-center">
+        
+        <li class="nav-item mx-1">
+          <a class="nav-link active fw-medium d-flex align-items-center" aria-current="page" href="/">
+            <i class="bi bi-house-door me-2"></i> Inicio
+          </a>
+        </li>
+        
+        <li class="nav-item mx-1 dropdown">
+          <a class="nav-link dropdown-toggle text-white-50 fw-medium d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-gear me-2"></i> Usuarios
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark border-0 shadow rounded-3" aria-labelledby="navbarDropdownMenuLink">
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center" href="/usuarios/nuevo">
+                <i class="bi bi-person-plus me-2"></i> Crear usuario
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center" href="/usuarios/registro-completo">
+                <i class="bi bi-person-plus me-2"></i> Registro completo
+              </a>
+            </li>            
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center" href="/usuarios">
+                <i class="bi bi-people me-2"></i> Ver todos
+              </a>
+            </li>
+          </ul>
+        </li>
+  
+        <li class="nav-item mx-1 dropdown">
+          <a class="nav-link dropdown-toggle text-white-50 fw-medium d-flex align-items-center" href="#" id="navbarDropdownPedidos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bag me-2"></i> Pedidos
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark border-0 shadow rounded-3" aria-labelledby="navbarDropdownPedidos">
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center" href="/pedidos/nuevo">
+                <i class="bi bi-bag-plus me-2"></i> Nuevo pedido
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-2 d-flex align-items-center" href="/pedidos">
+                <i class="bi bi-bag-check me-2"></i> Ver todos
+              </a>
+            </li>
+          </ul>
+        </li>
 
-        </ul>
+        <li class="nav-item mx-1">
+          <a class="nav-link text-white-50 fw-medium d-flex align-items-center" href="/status">
+            <i class="bi bi-activity me-2"></i> Estado
+          </a>
+        </li>
 
-        <form class="d-flex" role="search" method="get" action="/usuarios">
-          <div class="input-group">
-            <input id="nombre" name="nombre" class="form-control bg-secondary text-white border-0 opacity-75" type="search"
-              placeholder="Buscar usuario por nombre..." aria-label="Search">
-            <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
-          </div>
-        </form>
-      </div>
+        <li class="nav-item mx-1">
+          <a class="nav-link text-white-50 fw-medium d-flex align-items-center" href="/api/usuarios">
+            <i class="bi bi-braces me-2"></i> API
+          </a>
+        </li>
+      </ul>
+
+      <form class="d-flex" role="search" method="get" action="/usuarios">
+        <div class="input-group">
+          <input id="nombre" name="nombre" class="form-control bg-secondary text-white border-0 opacity-75" type="search"
+            placeholder="Buscar usuario por nombre..." aria-label="Search">
+          <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+      </form>
     </div>
-  </nav>
+  </div>
+</nav>

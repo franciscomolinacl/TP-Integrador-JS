@@ -40,6 +40,9 @@ validarVariablesEntorno();
 import usuariosOrmRouter
   from "./routes/usuarios-orm.routes.js";
 
+import pedidosOrmRouter
+  from "./routes/pedidos-orm.routes.js";
+
 await probarSequelize();
 try {
   await probarConexion();
@@ -85,6 +88,11 @@ app.use("/api/usuarios", usuariosRouter);
 app.use(
   "/api/orm/usuarios",
   usuariosOrmRouter
+);
+
+app.use(
+  "/api/orm/pedidos",
+  pedidosOrmRouter
 );
 
 app.use(rutaNoEncontrada);

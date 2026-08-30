@@ -1,0 +1,43 @@
+{{> header}}
+<main class="container my-5 flex-grow-1">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+        <div>
+          <h1 class="display-6 fw-bold text-dark m-0">{{titulo}}</h1>
+          <p class="text-muted m-0 mt-1">Consulta los pedidos registrados en la plataforma.</p>
+        </div>
+        <div>
+          <span class="badge bg-dark text-white rounded-pill px-3 py-2 fs-6 shadow-sm">
+            <i class="bi bi-bag me-2"></i>Total encontrado: <span
+              class="fw-bold text-info">{{totalPedidos}}</span>
+          </span>
+        </div>
+      </div>
+
+      {{#if hayPedidos}}
+      <section class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {{#each pedidos}}
+        <div class="col">
+          {{> tarjetaPedido}}
+        </div>
+        {{/each}}
+      </section>
+      {{else}}
+
+      <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light">
+        <div class="text-muted mb-3">
+          <i class="bi bi-bag-x display-1 opacity-20"></i>
+        </div>
+        <h3 class="h5 fw-bold text-secondary">No se encontraron pedidos</h3>
+        <p class="text-muted small px-3">Aún no hay pedidos registrados en la plataforma.</p>
+        <a href="/pedidos/nuevo" class="btn btn-sm btn-dark mt-2 fw-medium">Crear pedido</a>
+      </div>
+      {{/if}}
+
+    </div>
+  </div>
+</main>
+
+{{> footer}}

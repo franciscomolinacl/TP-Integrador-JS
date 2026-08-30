@@ -3,7 +3,8 @@ import {
   obtenerUsuarioPorId, 
   modificarUsuario, 
   eliminarUsuario,
-  registrarUsuarioCompleto
+  registrarUsuarioCompleto,
+  obtenerUsuarios
 } from "../services/usuarios.service.js";
 
 export function mostrarFormularioNuevoUsuario(
@@ -253,5 +254,26 @@ export async function registrarUsuarioCompletoWeb(
     }
 
     next(error);
+  }
+}
+
+export async function mostrarFormularioNuevoPedido(req, res, next) {
+  try {
+    const usuarios = await obtenerUsuarios(); 
+
+    res.render(
+      "pedidos/nuevo",
+      {
+        titulo: "Nuevo pedido",
+        usuarios,
+        valores: {
+          usuarioId: "",
+          estado: "",
+          total: ""
+        }
+      }
+    );
+  } catch (error) {
+    next(error); 
   }
 }

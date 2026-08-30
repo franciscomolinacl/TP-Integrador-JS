@@ -1,4 +1,11 @@
 export function manejarErrores(error, req, res, next) {
+
+  if (error.constraint === "usuarios_correo_key") {
+    error.statusCode = 409;
+    error.message = "El correo ya está registrado.";
+  }
+
+
   const statusCode = error.statusCode || 500;
   const esDesarrollo =
     process.env.NODE_ENV === "development";

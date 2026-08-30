@@ -63,6 +63,74 @@ export async function obtenerUsuarios() {
 
   return usuarios;
 }
+
+export async function buscarConFiltros({
+  nombre,
+  activo
+}) {
+  const condiciones = [];
+  const valores = [];
+
+  if (nombre) {
+    valores.push(`%${nombre}%`);
+
+    condiciones.push(
+      `nombre ILIKE $${valores.length}`
+    );
+  }
+
+  if (activo !== undefined) {
+    valores.push(activo);
+
+    condiciones.push(
+      `activo = $${valores.length}`
+    );
+  }
+
+  const where =
+    condiciones.length > 0
+      ? `WHERE ${condiciones.join(" AND ")}`
+      : "";
+
+  const sql = `
+    SELECT
+      id,
+      nombre,
+      correo,
+      activo
+    FROM usuarios
+    ${where}
+    ORDER BY id
+  `;
+
+  const resultado = await pool.query(
+    sql,
+    valores
+  );
+
+  return resultado.rows;
+}
+
+export async function obtenerUsuariosConFiltros(
+  filtros
+) {
+  const nombre =
+    filtros.nombre?.trim() || undefined;
+
+  let activo;
+
+  if (filtros.activo !== undefined) {
+    activo = convertirBooleano(
+      filtros.activo
+    );
+  }
+
+  return buscarConFiltros({
+    nombre,
+    activo
+  });
+}
+
 export async function contarUsuarios() {
   const resultado = await pool.query(`
     SELECT COUNT(*) AS total

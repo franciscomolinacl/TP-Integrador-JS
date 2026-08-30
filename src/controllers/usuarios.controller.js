@@ -3,29 +3,22 @@ import {
   eliminarUsuario,
   modificarUsuario,
   obtenerUsuarioPorId,
-  obtenerUsuarios
+  obtenerUsuarios,
+  obtenerUsuariosConFiltros,
+  contarUsuarios
 } from "../services/usuarios.service.js";
 import { crearErrorHttp } from "../utils/errores.js";
 
-export async function listarUsuarios(req, res, next) {
+export async function listarUsuarios(
+  req,
+  res,
+  next
+) {
   try {
-    let usuarios = await obtenerUsuarios();
-    const { activo } = req.query;
-
-    if (activo !== undefined) {
-      if (activo !== "true" && activo !== "false") {
-        throw crearErrorHttp(
-          'El filtro "activo" debe ser "true" o "false".',
-          400
-        );
-      }
-
-      const valorActivo = activo === "true";
-
-      usuarios = usuarios.filter(
-        (usuario) => usuario.activo === valorActivo
+    const usuarios =
+      await obtenerUsuariosConFiltros(
+        req.query
       );
-    }
 
     res.status(200).json({
       status: "ok",
@@ -33,7 +26,12 @@ export async function listarUsuarios(req, res, next) {
       data: usuarios,
       meta: {
         total: usuarios.length,
-        requestTime: req.requestTime
+        filters: {
+          nombre:
+            req.query.nombre ?? null,
+          activo:
+            req.query.activo ?? null
+        }
       }
     });
   } catch (error) {
@@ -168,5 +166,17 @@ export async function borrarUsuario(
     });
   } catch (error) {
     next(error);
+  }
+}
+
+export async function obtenerResumenUsuarios(req, res) {
+  try {
+    const total = await contarUsuarios();
+    
+    return res.json({ total }); 
+    
+  } catch (error) {
+    console.error("Error en usuarios.controller:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 }

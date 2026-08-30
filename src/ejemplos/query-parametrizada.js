@@ -3,7 +3,7 @@ import {
   pool
 } from "../config/database.js";
 
-const id = 1;
+const id = 3;
 
 try {
   const resultado = await pool.query(

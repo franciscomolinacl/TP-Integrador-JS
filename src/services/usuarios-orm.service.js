@@ -1,6 +1,10 @@
 import {
-  Usuario
-} from "../models/Usuario.js";
+  Perfil,
+  Pedido,
+  Rol,
+  Usuario,
+  UsuarioRol
+} from "../models/index.js";
 
 export async function obtenerUsuariosOrm() {
   const usuarios =
@@ -31,7 +35,7 @@ export async function obtenerUsuarioOrm(
   id
 ) {
   const idNumerico =
-    validarId(id);
+    id;
 
   return Usuario.findByPk(
     idNumerico
@@ -70,7 +74,7 @@ export async function modificarUsuarioOrm(
   datos
 ) {
   const idNumerico =
-    validarId(id);
+    id;
 
   const usuario =
     await Usuario.findByPk(
@@ -115,7 +119,7 @@ export async function eliminarUsuarioOrm(
   id
 ) {
   const idNumerico =
-    validarId(id);
+    id;
 
   const usuario =
     await Usuario.findByPk(
@@ -133,3 +137,233 @@ export async function eliminarUsuarioOrm(
 
   return datos;
 }
+
+
+
+export async function obtenerUsuarioConRelaciones(
+  id
+) {
+  const usuario =
+    await Usuario.findByPk(
+      id,
+      {
+        attributes: [
+          "id",
+          "nombre",
+          "correo",
+          "activo",
+          "createdAt",
+          "updatedAt"
+        ],
+
+        include: [
+          {
+            model:
+              Perfil,
+            as:
+              "perfil"
+          },
+
+          {
+            model:
+              Pedido,
+            as:
+              "pedidos",
+            separate:
+              true,
+            order: [
+              [
+                "createdAt",
+                "DESC"
+              ]
+            ]
+          },
+
+          {
+            model:
+              Rol,
+            as:
+              "roles",
+            through: {
+              attributes: [
+                "asignadoPor"
+              ]
+            }
+          }
+        ]
+      }
+    );
+
+  return usuario
+    ? usuario.toJSON()
+    : null;
+}
+
+export async function obtenerUsuarioConPedidos(
+  id
+) {
+  const idNumerico =
+    id;
+
+  return Usuario.findByPk(
+    idNumerico,
+    {
+      attributes: [
+        "id",
+        "nombre",
+        "correo",
+        "activo"
+      ],
+
+      include: [
+        {
+          model:
+            Pedido,
+          as:
+            "pedidos",
+          attributes: [
+            "id",
+            "fecha",
+            "estado",
+            "total"
+          ]
+        }
+      ]
+    }
+  );
+}
+
+export async function obtenerPerfilPorUsuarioId(
+  usuarioId
+) {
+  const perfil =
+    await Perfil.findOne({
+      where: {
+        usuarioId
+      }
+    });
+
+  return perfil
+    ? perfil.toJSON()
+    : null;
+}
+
+export async function obtenerPerfilConUsuario(
+  usuarioId
+) {
+  const perfil =
+    await Perfil.findOne({
+      where: {
+        usuarioId
+      },
+      include: [
+        {
+          model:
+            Usuario,
+          as:
+            "usuario",
+          attributes: [
+            "id",
+            "nombre",
+            "correo"
+          ]
+        }
+      ]
+    });
+
+  return perfil
+    ? perfil.toJSON()
+    : null;
+}
+
+export async function crearPerfilOrm(
+  datos
+) {
+  const existente =
+    await Perfil.findOne({
+      where: {
+        usuarioId:
+          datos.usuarioId
+      }
+    });
+
+  if (existente) {
+    const error =
+      new Error(
+        "El usuario ya tiene un perfil registrado."
+      );
+
+    error.statusCode =
+      400;
+
+    throw error;
+  }
+
+  const usuario =
+    await Usuario.findByPk(
+      datos.usuarioId
+    );
+
+  if (!usuario) {
+    const error =
+      new Error(
+        "El usuario asociado no existe."
+      );
+
+    error.statusCode =
+      400;
+
+    throw error;
+  }
+
+  const perfil =
+    await Perfil.create({
+      usuarioId:
+        datos.usuarioId,
+      telefono:
+        datos.telefono ||
+        null,
+      direccion:
+        datos.direccion ||
+        null,
+      fechaNacimiento:
+        datos.fechaNacimiento ||
+        null
+    });
+
+  return perfil.toJSON();
+}
+
+export async function actualizarPerfilOrm(
+  usuarioId,
+  cambios
+) {
+  const perfil =
+    await Perfil.findOne({
+      where: {
+        usuarioId
+      }
+    });
+
+  if (!perfil) {
+    return null;
+  }
+
+  const datos =
+    Object.fromEntries(
+      Object.entries(
+        cambios ?? {}
+      ).filter(
+        ([clave, valor]) =>
+          valor !==
+          undefined
+      )
+    );
+
+  await perfil.update(
+    datos
+  );
+
+  return perfil.toJSON();
+}
+

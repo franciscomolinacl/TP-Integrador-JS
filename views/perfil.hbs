@@ -1,0 +1,88 @@
+{{> header}}
+
+<main class="container my-5 flex-grow-1">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+
+      <div class="mb-4">
+        <a href="/usuarios"
+          class="btn btn-link link-secondary p-0 text-decoration-none d-inline-flex align-items-center gap-2 fw-medium link-hover">
+          <i class="bi bi-arrow-left fs-5"></i> Volver a usuarios
+        </a>
+      </div>
+
+      <article class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+
+        <div class="card-header bg-dark text-white p-4 border-0 d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              class="bg-white bg-opacity-10 text-white rounded-circle p-2 d-flex align-items-center justify-content-center"
+              style="width: 48px; height: 48px;">
+              <i class="bi bi-person-badge-fill fs-4"></i>
+            </div>
+            <div>
+              <h1 class="h3 m-0 fw-bold tracking-wide">{{usuario.nombre}}</h1>
+              <p class="m-0 small opacity-75">{{usuario.correo}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+          {{#if tienePerfil}}
+          <div class="row g-4">
+
+            <div class="col-md-6">
+              <div class="p-3 bg-light rounded-3 border border-light">
+                <span class="text-uppercase text-muted fw-bold small tracking-wider d-block mb-1">
+                  <i class="bi bi-telephone me-1"></i> Teléfono
+                </span>
+                <span class="text-dark fw-medium fs-5">{{#if perfil.telefono}}{{perfil.telefono}}{{else}}<span class="text-muted fst-italic">No registrado</span>{{/if}}</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="p-3 bg-light rounded-3 border border-light">
+                <span class="text-uppercase text-muted fw-bold small tracking-wider d-block mb-1">
+                  <i class="bi bi-calendar3 me-1"></i> Fecha de nacimiento
+                </span>
+                <span class="text-dark fw-medium fs-5">{{#if perfil.fechaNacimiento}}{{formatearFecha perfil.fechaNacimiento}}{{else}}<span class="text-muted fst-italic">No registrada</span>{{/if}}</span>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="p-3 bg-light rounded-3 border border-light">
+                <span class="text-uppercase text-muted fw-bold small tracking-wider d-block mb-1">
+                  <i class="bi bi-geo-alt me-1"></i> Dirección
+                </span>
+                <span class="text-dark fw-medium fs-5">{{#if perfil.direccion}}{{perfil.direccion}}{{else}}<span class="text-muted fst-italic">No registrada</span>{{/if}}</span>
+              </div>
+            </div>
+
+          </div>
+          {{else}}
+
+          <div class="text-center py-4">
+            <div class="text-muted mb-3">
+              <i class="bi bi-person-exclamation display-1 opacity-20"></i>
+            </div>
+            <h3 class="h5 fw-bold text-secondary">Este usuario no tiene perfil registrado</h3>
+            <p class="text-muted small px-3">Crea un perfil para agregar información de contacto.</p>
+          </div>
+
+          {{/if}}
+        </div>
+
+        <div class="card-footer bg-light p-3 text-end border-0 px-4">
+          <a class="btn btn-outline-dark btn-sm w-100 rounded-3 fw-medium d-flex align-items-center justify-content-center my-2 gap-1 shadow-sm-hover transition-base text-dark link-light" 
+            href="/usuarios/{{usuario.id}}/perfil/editar">
+            <i class="bi bi-pencil-square small"></i> {{#if tienePerfil}}Editar perfil{{else}}Crear perfil{{/if}}
+          </a>
+        </div>
+
+      </article>
+
+    </div>
+  </div>
+</main>
+
+{{> footer}}
