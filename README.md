@@ -78,47 +78,36 @@ Aplicación web que permite gestionar usuarios, perfiles y pedidos con Node.js, 
         psql -U postgres
    Ingresa la contraseña que pusiste al instalar PostgreSQL
 
-6. ### Crear la base de datos a utilizar con este comando:
+6. ### Crear la base de datos y tablas con este comando:
 
-        CREATE DATABASE node_express_app;
-   Puedes verificar con estos comandos:
+         psql -U postgres -c "CREATE DATABASE node_express_app;" -f sql/schema.sql -f sql/seed.sql
 
-        \c node_express_app
-        \conninfo
+   Ingresa la contraseña de PostgreSQL cuando te pida.
 
-7. ### Agregar datos de schema.sql.
-   Ejecuta el siguiente comando:
-
-        psql -U postgres -d node_express_app -f sql/schema.sql
-
-   Otra opción es copiar el codigo de sql/schema.sql, pegarlo y ejecutarlo en psql o PgAdmin.
-
-8. ### Agregar datos adicionales
-      Ejecuta el siguiente comando:
-
-        psql -U postgres -d node_express_app -f sql/seed.sql
-
-   O similar a lo anterior, copia el contenido de sql/seed.sql, pegalo y ejecutalo en psql o PgAdmin.
-
-9. ### Crear archivo .env con lo siguiente:
+7. ### Crear archivo .env con lo siguiente:
     
-        PORT=4000
-        NODE_ENV=development
+         PORT=4000
+         NODE_ENV=development
 
-        DB_HOST=localhost
-        DB_PORT=5432
-        DB_NAME=node_express_app
-        DB_USER=postgres
-        DB_PASSWORD=CONTRASEÑA
+         DB_HOST=localhost
+         DB_PORT=5432
+         DB_NAME=node_express_app
+         DB_USER=postgres
+         DB_PASSWORD=CONTRASEÑA
 
-      En CONTRASEÑA, debes cambiarlo por tu contraseña de la base de datos.
+         JWT_SECRET=una_clave_larga_para_desarrollo
+         JWT_EXPIRES_IN=1h
+
+       En CONTRASEÑA, debes cambiarlo por tu contraseña de la base de datos. Tambien puedes cambiar una_clave_larga_para_desarrollo
 
 
-10. ### Ejecutar el servidor con este comando:
+8. ### Ejecutar el servidor con este comando:
 
-        npm run dev
+         npm run dev
 
-11. ### Abrir en navegador [http://localhost:4000/](http://localhost:4000/)
+    Asegúrate de estar en la carpeta del proyecto en la terminal.
+
+9. ### Abrir en navegador [http://localhost:4000/](http://localhost:4000/)
 
 ---
 ## CRUD de usuarios
@@ -344,12 +333,31 @@ Los formularios Handlebars permiten gestionar usuarios, perfiles y pedidos.
 
 Las credenciales se cargan desde variables de entorno y no se suben al repositorio.
 
+---
+
+## Reflexión del proyecto
+
+En el **Módulo 6** senté las bases del backend: instalación de Node.js y Express, configuración del servidor, uso de middlewares, manejo de rutas y primeros contactos con la manipulación de archivos y logs. Aprendí a estructurar una aplicación de forma modular separando responsabilidades.
+
+En el **Módulo 7** integré la persistencia de datos con PostgreSQL y Sequelize, modelando entidades con relaciones 1:1, 1:N y N:M. Implementé operaciones CRUD completas, consultas filtradas, validaciones y manejo centralizado de errores. También practiqué el patrón Repository y las transacciones con BEGIN/COMMIT/ROLLBACK.
+
+En el **Módulo 8** consolidé todo construyendo una API RESTful completa. Implementé autenticación JWT con login y registro, protegi rutas con middlewares, configuré subida de archivos con validación de tipo y tamaño, y asocié los archivos subidos a registros en la base de datos (avatar de perfil). Además, creé una interfaz web con Handlebars que reutiliza los mismos servicios de la API, demostrando la versatilidad de la arquitectura.
+
+Este proyecto me permitió entender el ciclo completo de un backend: desde la configuración del servidor hasta una API lista para ser consumida por un cliente externo.
+
 
 ### API REST – v1
 
 Base:
 
 `/api/v1`
+
+#### Auth
+
+- `POST /api/v1/auth/registro` → Registrar usuario
+- `POST /api/v1/auth/login` → Iniciar sesión
+- `POST /api/v1/auth/decode` → Decodificar token
+- `GET /api/v1/auth/me` → Obtener sesión actual (requiere token)
 
 #### Usuarios
 
@@ -358,15 +366,63 @@ Base:
 - `POST /api/v1/usuarios`
 - `PUT /api/v1/usuarios/:id`
 - `DELETE /api/v1/usuarios/:id`
+- `GET /api/v1/usuarios/:id/pedidos` → Pedidos de un usuario
 
 #### Pedidos
 
 - `GET /api/v1/pedidos`
 - `GET /api/v1/pedidos/:id`
-- `POST /api/v1/pedidos`
-- `PUT /api/v1/pedidos/:id`
-- `DELETE /api/v1/pedidos/:id`
+- `POST /api/v1/pedidos` (requiere token)
+- `PUT /api/v1/pedidos/:id` (requiere token)
+- `DELETE /api/v1/pedidos/:id` (requiere token)
 
+#### Upload
+
+- `POST /api/v1/upload` → Subir archivo (requiere token)
+- `DELETE /api/v1/upload/:nombre` → Eliminar archivo (requiere token)
+
+---
+
+## Autenticación JWT
+
+La aplicación utiliza JWT para autenticar usuarios. Al iniciar sesión o registrarse, se genera un token que se almacena en una cookie `httpOnly`.
+
+### Flujo web
+
+1. El usuario accede a `/login` o `/registro`
+2. Al autenticarse exitosamente, se guarda el token en cookie
+3. El middleware `cargarSesionWeb` lee la cookie y carga el usuario
+4. Las rutas protegidas redirigen a `/login` si no hay sesión
+
+### Rutas web protegidas
+
+Todas las rutas de usuarios y pedidos (GET y POST) requieren estar autenticado.
+
+### Rutas públicas
+
+- `/login`
+- `/registro`
+- `/` (inicio)
+- `/status`
+- `/api/*` (API)
+
+---
+
+## Upload de archivos
+
+La aplicación permite subir imágenes (avatars) utilizando `express-fileupload`.
+
+### Limitaciones
+
+- Formatos permitidos: `.jpg`, `.jpeg`, `.png`, `.webp`
+- Tamaño máximo: 5 MB
+- Los archivos se guardan en `public/uploads/`
+
+### Uso web
+
+Desde el perfil del usuario, se puede subir un avatar que aparecerá en el header.
+
+---
 
 ## Estructura del proyecto
 ```bash
@@ -440,19 +496,20 @@ Base:
  ┃ ┃ ┣ 🖼️caption-servidor-iniciado.png
  ┃ ┃ ┣ 🖼️caption-usuario.png
  ┃ ┃ ┣ 🖼️caption-usuarios.png
- ┃ ┗ ┗ 🖼️caption-web-inicio.png
+ ┃ ┃ ┗ 🖼️caption-web-inicio.png
  ┣ 📂logs
  ┃ ┣ 🧾log.txt
  ┃ ┗ 🧾transacciones.log
- ┣ 📂node_modules (con todos los modulos necesarios)
+ ┣ 📂node_modules
  ┣ 📂public
  ┃ ┣ 📂css
  ┃ ┃ ┗ 🎨estilos.css
  ┃ ┣ 📂img
  ┃ ┃ ┣ 🎯favicon.ico
  ┃ ┃ ┗ 🖼️logo.png
- ┃ ┗ 📂js
- ┃   ┗ 📜app.js
+ ┃ ┣ 📂js
+ ┃ ┃ ┗ 📜app.js
+ ┃ ┗ 📂uploads
  ┣ 📂sql
  ┃ ┣ 🗄️schema.sql
  ┃ ┗ 🗄️seed.sql
@@ -463,14 +520,16 @@ Base:
  ┃ ┃ ┣ 📜handlebars.js
  ┃ ┃ ┗ 📜sequelize.js
  ┃ ┣ 📂controllers
+ ┃ ┃ ┣ 📜auth.controller.js
  ┃ ┃ ┣ 📜database.controller.js
  ┃ ┃ ┣ 📜index.controller.js
  ┃ ┃ ┣ 📜pedidos-orm.controller.js
  ┃ ┃ ┣ 📜pedidos-v1.controller.js
  ┃ ┃ ┣ 📜perfil-web.controller.js
+ ┃ ┃ ┣ 📜upload.controller.js
  ┃ ┃ ┣ 📜usuarios-api.controller.js
  ┃ ┃ ┣ 📜usuarios-orm.controller.js
- ┃ ┃ ┣ 📜usuarios-v1.controller.js 
+ ┃ ┃ ┣ 📜usuarios-v1.controller.js
  ┃ ┃ ┣ 📜usuarios-web.controller.js
  ┃ ┃ ┗ 📜usuarios.controller.js
  ┃ ┣ 📂data
@@ -491,6 +550,8 @@ Base:
  ┃ ┣ 📂middlewares
  ┃ ┃ ┣ 📜agregarContextoPeticion.js
  ┃ ┃ ┣ 📜agregarDatosVista.js
+ ┃ ┃ ┣ 📜auth.middleware.js
+ ┃ ┃ ┣ 📜auth-web.middleware.js
  ┃ ┃ ┣ 📜manejarErrores.js
  ┃ ┃ ┣ 📜registrarAcceso.js
  ┃ ┃ ┣ 📜registrarModulo.js
@@ -507,15 +568,19 @@ Base:
  ┃ ┃ ┣ 📜historial.repository.js
  ┃ ┃ ┗ 📜usuarios.repository.js
  ┃ ┣ 📂routes
+ ┃ ┃ ┣ 📜auth.routes.js
  ┃ ┃ ┣ 📜index.routes.js
  ┃ ┃ ┣ 📜pedidos-orm.routes.js
- ┃ ┃ ┣ 📜pedidos-v1.routes.js 
+ ┃ ┃ ┣ 📜pedidos-v1.routes.js
+ ┃ ┃ ┣ 📜upload.routes.js
  ┃ ┃ ┣ 📜usuarios-orm.routes.js
- ┃ ┃ ┣ 📜usuarios-v1.routes.js 
+ ┃ ┃ ┣ 📜usuarios-v1.routes.js
  ┃ ┃ ┣ 📜usuarios.routes.js
  ┃ ┃ ┗ 📜web.routes.js
  ┃ ┣ 📂services
+ ┃ ┃ ┣ 📜auth.service.js
  ┃ ┃ ┣ 📜pedidos-orm.service.js
+ ┃ ┃ ┣ 📜upload.service.js
  ┃ ┃ ┣ 📜usuarios-orm.service.js
  ┃ ┃ ┗ 📜usuarios.service.js
  ┃ ┣ 📂utils
@@ -524,11 +589,15 @@ Base:
  ┃ ┃ ┣ 📜errores.js
  ┃ ┃ ┣ 📜logs.js
  ┃ ┃ ┣ 📜mensajes.js
+ ┃ ┃ ┣ 📜password.util.js
  ┃ ┃ ┣ 📜rutas.js
  ┃ ┃ ┗ 📜validaciones.js
  ┃ ┣ 📜app.js
  ┃ ┗ 📜cli.js
  ┣ 📂views
+ ┃ ┣ 📂auth
+ ┃ ┃ ┣ 🎭login.hbs
+ ┃ ┃ ┗ 🎭registro.hbs
  ┃ ┣ 📂partials
  ┃ ┃ ┣ 🎭footer.hbs
  ┃ ┃ ┣ 🎭header.hbs
@@ -541,6 +610,7 @@ Base:
  ┃ ┣ 📂usuarios
  ┃ ┃ ┣ 🎭editar.hbs
  ┃ ┃ ┣ 🎭nuevo.hbs
+ ┃ ┃ ┣ 🎭pedidos.hbs
  ┃ ┃ ┗ 🎭registro-completo.hbs
  ┃ ┣ 🎭error.hbs
  ┃ ┣ 🎭home.hbs
