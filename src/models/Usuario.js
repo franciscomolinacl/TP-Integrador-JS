@@ -43,6 +43,16 @@ Usuario.init(
         false,
       defaultValue:
         true
+    },
+    passwordHash: {
+      type:
+        DataTypes.STRING(255),
+
+      allowNull:
+        true,
+
+      field:
+        "password_hash"
     }
   },
   {

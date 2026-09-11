@@ -1,0 +1,87 @@
+{{> header}}
+
+<main class="container my-5 flex-grow-1">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+
+      <div class="mb-4">
+        <h1 class="display-6 fw-bold text-dark m-0">{{titulo}}</h1>
+        <p class="text-muted m-0 mt-1">Crea tu cuenta para acceder a la plataforma.</p>
+      </div>
+
+      {{#if error}}
+        <div class="alert alert-danger d-flex align-items-center border-0 shadow-sm rounded-4 mb-4" role="alert">
+          <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+          <div>
+            <strong class="d-block">No fue posible registrar tu cuenta:</strong>
+            <span class="small">{{error}}</span>
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+        <form method="POST" action="/registro" class="needs-validation" novalidate>
+
+          <div class="mb-4">
+            <label for="nombre" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-person me-1"></i> Nombre Completo
+            </label>
+            <input
+              id="nombre"
+              name="nombre"
+              type="text"
+              class="form-control bg-light border-light py-2"
+              placeholder="Ej: Juan Pérez"
+              required
+              minlength="2"
+              value="{{valores.nombre}}"
+            >
+          </div>
+
+          <div class="mb-4">
+            <label for="correo" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-envelope me-1"></i> Correo Electrónico
+            </label>
+            <input
+              id="correo"
+              name="correo"
+              type="email"
+              class="form-control bg-light border-light py-2"
+              placeholder="correo@ejemplo.com"
+              required
+              value="{{valores.correo}}"
+            >
+          </div>
+
+          <div class="mb-5">
+            <label for="password" class="form-label text-secondary fw-semibold small text-uppercase tracking-wider">
+              <i class="bi bi-lock me-1"></i> Contraseña
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              class="form-control bg-light border-light py-2"
+              placeholder="Mínimo 8 caracteres"
+              required
+              minlength="8"
+            >
+          </div>
+
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 border-top pt-4">
+            <a href="/login" class="text-muted text-decoration-none small order-2 order-sm-1">
+              ¿Ya tienes cuenta? <span class="fw-semibold text-dark">Inicia sesión</span>
+            </a>
+            <button type="submit" class="btn btn-dark rounded-pill px-4 py-2 order-1 order-sm-2 shadow-sm">
+              <i class="bi bi-person-plus-fill me-1"></i> Crear cuenta
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+{{> footer}}

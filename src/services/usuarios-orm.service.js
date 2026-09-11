@@ -1,4 +1,7 @@
 import {
+  Op
+} from "sequelize";
+import {
   Perfil,
   Pedido,
   Rol,
@@ -367,3 +370,91 @@ export async function actualizarPerfilOrm(
   return perfil.toJSON();
 }
 
+export async function buscarUsuariosOrm(
+  filtros = {}
+) {
+  const where = {};
+
+  if (
+    filtros.nombre !==
+    undefined
+  ) {
+    const nombre =
+      String(
+        filtros.nombre
+      ).trim();
+
+    if (nombre) {
+      where.nombre = {
+        [Op.iLike]:
+          `%${nombre}%`
+      };
+    }
+  }
+
+  if (
+    filtros.activo !==
+    undefined
+  ) {
+    if (
+      filtros.activo !==
+        "true" &&
+      filtros.activo !==
+        "false"
+    ) {
+      const error =
+        new Error(
+          "El filtro activo debe ser true o false."
+        );
+
+      error.statusCode =
+        400;
+
+      throw error;
+    }
+
+    where.activo =
+      filtros.activo ===
+      "true";
+  }
+
+  if (
+  filtros.correo !==
+  undefined
+) {
+  const correo =
+    String(
+      filtros.correo
+    ).trim();
+
+  if (correo) {
+    where.correo = {
+      [Op.iLike]:
+        `%${correo}%`
+    };
+  }
+}
+  const usuarios =
+    await Usuario.findAll({
+      where,
+      attributes: [
+        "id",
+        "nombre",
+        "correo",
+        "activo",
+        "createdAt",
+        "updatedAt"
+      ],
+      order: [
+        [
+          "id",
+          "ASC"
+        ]
+      ]
+    });
+
+  return usuarios.map(
+    (usuario) =>
+      usuario.toJSON()
+  );
+}

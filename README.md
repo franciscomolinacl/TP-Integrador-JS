@@ -344,12 +344,44 @@ Los formularios Handlebars permiten gestionar usuarios, perfiles y pedidos.
 
 Las credenciales se cargan desde variables de entorno y no se suben al repositorio.
 
+
+### API REST – v1
+
+Base:
+
+`/api/v1`
+
+#### Usuarios
+
+- `GET /api/v1/usuarios`
+- `GET /api/v1/usuarios/:id`
+- `POST /api/v1/usuarios`
+- `PUT /api/v1/usuarios/:id`
+- `DELETE /api/v1/usuarios/:id`
+
+#### Pedidos
+
+- `GET /api/v1/pedidos`
+- `GET /api/v1/pedidos/:id`
+- `POST /api/v1/pedidos`
+- `PUT /api/v1/pedidos/:id`
+- `DELETE /api/v1/pedidos/:id`
+
+
 ## Estructura del proyecto
 ```bash
 📦node-express-web-app
  ┣ 📂docs
- ┃ ┗ 📂capturas
+ ┃ ┣ 📂capturas
  ┃ ┃ ┣ 📂mas
+ ┃ ┃ ┃ ┣ 📂Modulo_8
+ ┃ ┃ ┃ ┃  ┣ 🖼️404 controlado.png
+ ┃ ┃ ┃ ┃  ┣ 🖼️Filtro correo.png
+ ┃ ┃ ┃ ┃  ┣ 🖼️Filtro mediante query.png
+ ┃ ┃ ┃ ┃  ┣ 🖼️Metodo DELETE.png
+ ┃ ┃ ┃ ┃  ┣ 🖼️Metodo GET.png
+ ┃ ┃ ┃ ┃  ┣ 🖼️Metodo POST.png
+ ┃ ┃ ┃ ┃  ┗ 🖼️Metodo PUT.png
  ┃ ┃ ┃ ┣ 🖼️Comprobacion de eliminacion en psql.png
  ┃ ┃ ┃ ┣ 🖼️Confirmacion de actualizacion en psql.png
  ┃ ┃ ┃ ┣ 🖼️Consulta a base de datos.png
@@ -408,7 +440,7 @@ Las credenciales se cargan desde variables de entorno y no se suben al repositor
  ┃ ┃ ┣ 🖼️caption-servidor-iniciado.png
  ┃ ┃ ┣ 🖼️caption-usuario.png
  ┃ ┃ ┣ 🖼️caption-usuarios.png
- ┃ ┃ ┗ 🖼️caption-web-inicio.png
+ ┃ ┗ ┗ 🖼️caption-web-inicio.png
  ┣ 📂logs
  ┃ ┣ 🧾log.txt
  ┃ ┗ 🧾transacciones.log
@@ -420,7 +452,7 @@ Las credenciales se cargan desde variables de entorno y no se suben al repositor
  ┃ ┃ ┣ 🎯favicon.ico
  ┃ ┃ ┗ 🖼️logo.png
  ┃ ┗ 📂js
- ┃ ┃ ┗ 📜app.js
+ ┃   ┗ 📜app.js
  ┣ 📂sql
  ┃ ┣ 🗄️schema.sql
  ┃ ┗ 🗄️seed.sql
@@ -434,9 +466,11 @@ Las credenciales se cargan desde variables de entorno y no se suben al repositor
  ┃ ┃ ┣ 📜database.controller.js
  ┃ ┃ ┣ 📜index.controller.js
  ┃ ┃ ┣ 📜pedidos-orm.controller.js
+ ┃ ┃ ┣ 📜pedidos-v1.controller.js
  ┃ ┃ ┣ 📜perfil-web.controller.js
  ┃ ┃ ┣ 📜usuarios-api.controller.js
  ┃ ┃ ┣ 📜usuarios-orm.controller.js
+ ┃ ┃ ┣ 📜usuarios-v1.controller.js 
  ┃ ┃ ┣ 📜usuarios-web.controller.js
  ┃ ┃ ┗ 📜usuarios.controller.js
  ┃ ┣ 📂data
@@ -475,7 +509,9 @@ Las credenciales se cargan desde variables de entorno y no se suben al repositor
  ┃ ┣ 📂routes
  ┃ ┃ ┣ 📜index.routes.js
  ┃ ┃ ┣ 📜pedidos-orm.routes.js
+ ┃ ┃ ┣ 📜pedidos-v1.routes.js 
  ┃ ┃ ┣ 📜usuarios-orm.routes.js
+ ┃ ┃ ┣ 📜usuarios-v1.routes.js 
  ┃ ┃ ┣ 📜usuarios.routes.js
  ┃ ┃ ┗ 📜web.routes.js
  ┃ ┣ 📂services

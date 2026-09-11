@@ -57,6 +57,24 @@ try {
   throw error;
 }
 
+import usuariosV1Router
+  from "./routes/usuarios-v1.routes.js";
+
+import pedidosV1Router
+  from "./routes/pedidos-v1.routes.js";
+
+import authRouter
+  from "./routes/auth.routes.js";
+
+import fileUpload
+  from "express-fileupload";
+
+import uploadRouter
+  from "./routes/upload.routes.js";
+
+import { cargarSesionWeb }
+  from "./middlewares/auth-web.middleware.js";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -70,16 +88,53 @@ hbs.registerPartials(RUTA_PARTIALS);
 registrarHelpersHandlebars();
 
 app.use(morgan("dev"));
-app.use(agregarContextoPeticion);
-app.use(registrarAcceso);
-app.use(agregarDatosVista);
 app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true
   })
 );
+
+app.use((req, res, next) => {
+  req.cookies = {};
+  const cookieHeader = req.headers.cookie;
+  if (cookieHeader) {
+    cookieHeader.split(";").forEach(cookie => {
+      const [name, ...rest] = cookie.split("=");
+      req.cookies[name.trim()] = rest.join("=").trim();
+    });
+  }
+
+  res.cookie = function(name, value, options = {}) {
+    let cookie = `${name}=${value}`;
+    if (options.httpOnly) cookie += "; HttpOnly";
+    if (options.secure) cookie += "; Secure";
+    if (options.sameSite) cookie += "; SameSite=" + options.sameSite;
+    if (options.maxAge) cookie += "; Max-Age=" + (options.maxAge / 1000);
+    const existing = res.getHeader("Set-Cookie") || [];
+    const cookies = Array.isArray(existing) ? existing : [existing];
+    cookies.push(cookie);
+    res.setHeader("Set-Cookie", cookies);
+    return res;
+  };
+
+  res.clearCookie = function(name) {
+    res.cookie(name, "", { maxAge: 0 });
+    return res;
+  };
+
+  next();
+});
+
+app.use(agregarContextoPeticion);
+app.use(registrarAcceso);
+app.use(cargarSesionWeb);
+app.use(agregarDatosVista);
 app.use(express.static(RUTA_PUBLIC));
+
+app.use(
+  fileUpload()
+);
 
 app.use("/", indexRouter);
 app.use("/", webRouter);
@@ -93,6 +148,26 @@ app.use(
 app.use(
   "/api/orm/pedidos",
   pedidosOrmRouter
+);
+
+app.use(
+  "/api/v1/usuarios",
+  usuariosV1Router
+);
+
+app.use(
+  "/api/v1/pedidos",
+  pedidosV1Router
+);
+
+app.use(
+  "/api/v1/auth",
+  authRouter
+);
+
+app.use(
+  "/api/v1/upload",
+  uploadRouter
 );
 
 app.use(rutaNoEncontrada);

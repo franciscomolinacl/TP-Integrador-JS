@@ -15,10 +15,16 @@
 
         <div class="card-header bg-dark text-white p-4 border-0 d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
-            <div
-              class="bg-white bg-opacity-10 text-white rounded-circle p-2 d-flex align-items-center justify-content-center"
-              style="width: 48px; height: 48px;">
-              <i class="bi bi-person-badge-fill fs-4"></i>
+            <div class="position-relative">
+              {{#if perfil.avatar}}
+                <img src="/uploads/{{perfil.avatar}}" alt="Avatar de {{usuario.nombre}}" 
+                  class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+              {{else}}
+                <div class="bg-white bg-opacity-10 text-white rounded-circle p-2 d-flex align-items-center justify-content-center"
+                  style="width: 48px; height: 48px;">
+                  <i class="bi bi-person-badge-fill fs-4"></i>
+                </div>
+              {{/if}}
             </div>
             <div>
               <h1 class="h3 m-0 fw-bold tracking-wide">{{usuario.nombre}}</h1>
@@ -72,11 +78,23 @@
           {{/if}}
         </div>
 
-        <div class="card-footer bg-light p-3 text-end border-0 px-4">
-          <a class="btn btn-outline-dark btn-sm w-100 rounded-3 fw-medium d-flex align-items-center justify-content-center my-2 gap-1 shadow-sm-hover transition-base text-dark link-light" 
-            href="/usuarios/{{usuario.id}}/perfil/editar">
-            <i class="bi bi-pencil-square small"></i> {{#if tienePerfil}}Editar perfil{{else}}Crear perfil{{/if}}
-          </a>
+        <div class="card-footer bg-light p-3 border-0 px-4">
+          <div class="d-flex flex-column gap-2">
+            <form method="POST" action="/usuarios/{{usuario.id}}/perfil/avatar" enctype="multipart/form-data" class="d-flex gap-2">
+              <input type="file" name="avatar" accept="image/*" class="form-control form-control-sm" required>
+              <button type="submit" class="btn btn-outline-dark btn-sm rounded-3 fw-medium px-3">
+                <i class="bi bi-camera small"></i> Subir avatar
+              </button>
+            </form>
+            <a class="btn btn-outline-primary btn-sm w-100 rounded-3 fw-medium d-flex align-items-center justify-content-center gap-1 shadow-sm-hover transition-base text-primary link-light" 
+              href="/usuarios/{{usuario.id}}/pedidos">
+              <i class="bi bi-bag small"></i> Ver pedidos
+            </a>
+            <a class="btn btn-outline-dark btn-sm w-100 rounded-3 fw-medium d-flex align-items-center justify-content-center gap-1 shadow-sm-hover transition-base text-dark link-light" 
+              href="/usuarios/{{usuario.id}}/perfil/editar">
+              <i class="bi bi-pencil-square small"></i> {{#if tienePerfil}}Editar perfil{{else}}Crear perfil{{/if}}
+            </a>
+          </div>
         </div>
 
       </article>

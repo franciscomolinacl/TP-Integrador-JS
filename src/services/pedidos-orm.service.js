@@ -166,3 +166,38 @@ export async function eliminarPedidoOrm(
   return eliminado;
 }
 
+export async function listarPedidosPorUsuarioOrm(
+  usuarioId
+) {
+  const pedidos =
+    await Pedido.findAll({
+      where: {
+        usuarioId
+      },
+      include: [
+        {
+          model:
+            Usuario,
+          as:
+            "usuario",
+          attributes: [
+            "id",
+            "nombre",
+            "correo"
+          ]
+        }
+      ],
+      order: [
+        [
+          "createdAt",
+          "DESC"
+        ]
+      ]
+    });
+
+  return pedidos.map(
+    (pedido) =>
+      pedido.toJSON()
+  );
+}
+

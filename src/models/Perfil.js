@@ -53,6 +53,13 @@ Perfil.init(
         true,
       field:
         "fecha_nacimiento"
+    },
+
+    avatar: {
+      type:
+        DataTypes.STRING(255),
+      allowNull:
+        true
     }
   },
   {

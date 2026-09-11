@@ -3,8 +3,12 @@ import {
   crearPedidoOrm,
   eliminarPedidoOrm,
   listarPedidosOrm,
-  obtenerPedidoOrm
+  obtenerPedidoOrm,
+  listarPedidosPorUsuarioOrm
 } from "../services/pedidos-orm.service.js";
+import {
+  obtenerUsuarioOrm
+} from "../services/usuarios-orm.service.js";
 
 export async function listarPedidos(
   req,
@@ -259,6 +263,38 @@ export async function borrarPedido(
         "Pedido eliminado.",
       data:
         pedido
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function listarPedidosUsuarioWeb(
+  req,
+  res,
+  next
+) {
+  try {
+    const usuarioId = Number(req.params.id);
+
+    const usuario = await obtenerUsuarioOrm(usuarioId);
+
+    if (!usuario) {
+      return res.status(404).render("error", {
+        titulo: "Usuario no encontrado",
+        statusCode: 404,
+        mensaje: "El usuario no existe."
+      });
+    }
+
+    const pedidos = await listarPedidosPorUsuarioOrm(usuarioId);
+
+    return res.render("usuarios/pedidos", {
+      titulo: `Pedidos de ${usuario.nombre}`,
+      usuario: usuario.toJSON(),
+      pedidos,
+      hayPedidos: pedidos.length > 0,
+      totalPedidos: pedidos.length
     });
   } catch (error) {
     next(error);
