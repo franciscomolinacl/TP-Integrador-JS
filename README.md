@@ -73,21 +73,19 @@ Aplicación web que permite gestionar usuarios, perfiles y pedidos con Node.js, 
    [Descargar PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 
 
-5. ### Conectarse a psql desde git en VS Code o psql instalado e ingresar con este comando:
+5. ### Crear base de datos con este comando:
 
-        psql -U postgres
+        psql -U postgres -c "CREATE DATABASE node_express_app;
+
    Ingresa la contraseña que pusiste al instalar PostgreSQL
 
-6. ### Crear la base de datos y tablas con este comando:
+6. ### Agregar datos de schema.sql y adicionales con estos comandos:
 
-         psql -U postgres -c "CREATE DATABASE node_express_app;" -f sql/schema.sql -f sql/seed.sql
+          psql -U postgres -d node_express_app -f sql/schema.sql
+          psql -U postgres -d node_express_app -f sql/seed.sql
 
    Ingresa la contraseña de PostgreSQL cuando te pida.
    
-   Salir de psql con
-  
-
-        \q
 
 7. ### Crear archivo .env en la raiz del proyecto con lo siguiente:
     
