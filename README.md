@@ -75,7 +75,7 @@ Aplicación web que permite gestionar usuarios, perfiles y pedidos con Node.js, 
 
 5. ### Crear base de datos con este comando:
 
-        psql -U postgres -c "CREATE DATABASE node_express_app;
+        psql -U postgres -c "CREATE DATABASE node_express_app;"
 
    Ingresa la contraseña que pusiste al instalar PostgreSQL
 
