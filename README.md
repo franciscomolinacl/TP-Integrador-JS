@@ -83,7 +83,7 @@ Aplicación web que permite gestionar usuarios, perfiles y pedidos con Node.js, 
          psql -U postgres -c "CREATE DATABASE node_express_app;" -f sql/schema.sql -f sql/seed.sql
 
    Ingresa la contraseña de PostgreSQL cuando te pida.
-
+   Salir con el comando \q
 7. ### Crear archivo .env con lo siguiente:
     
          PORT=4000
