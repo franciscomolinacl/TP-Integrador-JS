@@ -103,7 +103,7 @@ Aplicación web que permite gestionar usuarios, perfiles y pedidos con Node.js, 
          JWT_SECRET=una_clave_larga_para_desarrollo
          JWT_EXPIRES_IN=1h
 
-       En CONTRASEÑA, debes cambiarlo por tu contraseña de la base de datos. Tambien puedes cambiar una_clave_larga_para_desarrollo
+    En CONTRASEÑA, debes cambiarlo por tu contraseña de la base de datos. Tambien puedes cambiar una_clave_larga_para_desarrollo
 
 
 8. ### Ejecutar el servidor con este comando:
