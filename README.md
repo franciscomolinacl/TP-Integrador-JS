@@ -84,9 +84,12 @@ Aplicación web que permite gestionar usuarios, perfiles y pedidos con Node.js, 
 
    Ingresa la contraseña de PostgreSQL cuando te pida.
    
-   Salir con el comando
-         \q
-8. ### Crear archivo .env con lo siguiente:
+   Salir de psql con
+  
+
+        \q
+
+7. ### Crear archivo .env en la raiz del proyecto con lo siguiente:
     
          PORT=4000
          NODE_ENV=development
@@ -103,13 +106,13 @@ Aplicación web que permite gestionar usuarios, perfiles y pedidos con Node.js, 
        En CONTRASEÑA, debes cambiarlo por tu contraseña de la base de datos. Tambien puedes cambiar una_clave_larga_para_desarrollo
 
 
-9. ### Ejecutar el servidor con este comando:
+8. ### Ejecutar el servidor con este comando:
 
          npm run dev
 
     Asegúrate de estar en la carpeta del proyecto en la terminal.
 
-10. ### Abrir en navegador [http://localhost:4000/](http://localhost:4000/)
+9. ### Abrir en navegador [http://localhost:4000/](http://localhost:4000/)
 
 ---
 ## CRUD de usuarios
