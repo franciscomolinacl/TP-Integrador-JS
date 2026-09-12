@@ -2,15 +2,25 @@ import pg from "pg";
 
 const { Pool } = pg;
 
+// Detectamos si estamos en Render (producción)
+const isProduction = process.env.NODE_ENV === "production";
+
 export const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  // En Render usa la URL completa; en la computadora del profesor usa las variables por separado
+  connectionString: isProduction ? process.env.DATABASE_URL : undefined,
+  host: isProduction ? undefined : process.env.DB_HOST,
+  port: isProduction ? undefined : Number(process.env.DB_PORT || 5432),
+  database: isProduction ? undefined : process.env.DB_NAME,
+  user: isProduction ? undefined : process.env.DB_USER,
+  password: isProduction ? undefined : process.env.DB_PASSWORD,
+  
+  // Mantenemos tus configuraciones de rendimiento originales
   max: 10,
-  idleTimeoutMillis: 30_000,
-  connectionTimeoutMillis: 5_000
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
+  
+  // SSL para render+neon
+  ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
 pool.on("error", (error) => {
@@ -35,14 +45,3 @@ export async function probarConexion() {
 export async function cerrarPool() {
   await pool.end();
 }
-
-const DB_PORT = Number(
-  process.env.DB_PORT || 5432
-);
-
-if (!Number.isInteger(DB_PORT)) {
-  throw new Error(
-    "DB_PORT debe contener un número válido."
-  );
-}
-port: DB_PORT
