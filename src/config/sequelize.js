@@ -17,14 +17,6 @@ export const sequelize =
       port: DB_PORT,
       dialect:
         "postgres",
-      logging: console.log,
-      
-      // Para Neon+Render
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false
-        }
-      }
+      logging: console.log
     }
   );
